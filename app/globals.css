@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-blue-50: #f0f7ff;
+  --color-blue-100: #e0efff;
+  --color-blue-600: #0066cc;
+  /* Almuhtarif Primary Blue */
+  --color-blue-700: #0052a3;
+  --color-gray-50: #f8f8f8;
+  --color-gray-100: #eeeeee;
+  --color-gray-900: #003366;
+  /* SolveTek Primary Brand Color */
+  /* Pure Black for Titles */
+
+  --color-brand-accent: #FF8000;
+
+  --font-sans: var(--font-tajawal), 'Tajawal', sans-serif;
+  --font-heading: var(--font-tajawal), 'Tajawal', sans-serif;
+}
+
+/* Ultra-Wide Scale & Font Refinements */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+}
+
+/* Global Body & Theme Defaults */
+body {
+  font-family: var(--font-tajawal), 'Tajawal', sans-serif;
+  font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+  line-height: 1.7;
+  background-color: #f7f9fb;
+  color: #1f2937;
+}
+
+/* Light Mode Specifics (Immutable Defaults) */
+h1,
+h2,
+h3,
+h4,
+.font-heading {
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: #003366;
+}
+
+.prose {
+  line-height: 2;
+  color: #374151;
+}
+
+.prose h2,
+.prose h3 {
+  margin-top: 2.5em;
+  margin-bottom: 1em;
+}
+
+.prose p {
+  margin-bottom: 1.8em;
+}
+
+/* Standardized Article Images (Large & Prominent) */
+.prose img {
+  display: block;
+  margin: 4rem auto;
+  max-height: 800px;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 2rem;
+  box-shadow: 0 40px 100px rgba(0, 51, 102, 0.15);
+  object-fit: contain;
+  background-color: #fcfdfe;
+  border: 1px solid #f1f5f9;
+}
+
+/* Custom Utilities */
+@utility font-heading {
+  font-family: var(--font-tajawal), 'Tajawal', sans-serif;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
