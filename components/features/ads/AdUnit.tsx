@@ -31,19 +31,7 @@ export function AdUnit({ slotId, placement, format = "auto", className, responsi
 
     if (!shouldShow) return null;
 
-    // Development placeholder
-    if (process.env.NODE_ENV === "development") {
-        return (
-            <div
-                className={`bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center text-gray-400 text-sm font-mono p-4 ${className}`}
-                aria-label="Ad Placeholder"
-            >
-                AD_SLOT: {slotId} ({format})
-                <br />
-                PLACEMENT: {placement || 'global'}
-            </div>
-        );
-    }
+
 
     const adClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
 

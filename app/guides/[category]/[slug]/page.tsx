@@ -9,7 +9,6 @@ import Link from "next/link";
 import { Clock, Sparkles, ChevronLeft, Star } from "lucide-react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { ShareWidget } from "@/components/ui/ShareWidget";
-import { AffiliateProductBox } from "@/components/features/affiliate/AffiliateProductBox";
 import { MonetizationRenderer } from "@/components/features/monetization/MonetizationRenderer";
 
 interface ArticlePageProps {
@@ -38,15 +37,15 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
         title: article.title,
         description: article.excerpt,
         alternates: {
-            canonical: `https://solvetek.net/guides/${(await params).category}/${slug}`,
+            canonical: `${siteConfig.url}/guides/${(await params).category}/${slug}`,
         },
         openGraph: {
             type: "article",
             locale: "ar_SA",
             title: article.title,
             description: article.excerpt || "",
-            url: `https://solvetek.net/guides/${(await params).category}/${slug}`,
-            siteName: "SolveTek",
+            url: `${siteConfig.url}/guides/${(await params).category}/${slug}`,
+            siteName: siteConfig.name,
             images: [
                 {
                     url: ogImage,
@@ -68,6 +67,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 import { ReadingProgress } from "@/components/ui/ReadingProgress";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { ViewTracker } from "@/components/features/guides/ViewTracker";
+import { siteConfig } from "@/lib/config";
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
     const { slug } = await params;
@@ -114,9 +114,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
     const jsonLd = generateArticleSchema(article);
     const breadcrumbLd = generateBreadcrumbSchema([
-        { name: "الرئيسية", item: "https://solvetek.net" },
-        { name: article.category?.name_ar || "", item: `https://solvetek.net/guides/${article.category?.slug}` },
-        { name: article.title, item: `https://solvetek.net/guides/${article.category?.slug}/${article.slug}` }
+        { name: "الرئيسية", item: siteConfig.url },
+        { name: article.category?.name_ar || "", item: `${siteConfig.url}/guides/${article.category?.slug}` },
+        { name: article.title, item: `${siteConfig.url}/guides/${article.category?.slug}/${article.slug}` }
     ]);
 
     return (
@@ -212,36 +212,20 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                                 {/* Bottom Positioning */}
                                 <MonetizationRenderer settings={article.monetization} position="bottom" />
 
-                                {/* Affiliate Recommendation: Shown for relevant categories */}
-                                {article.category?.slug === 'mobile' && (
-                                    <div className="mt-16">
-                                        <div className="flex items-center gap-4 mb-8">
-                                            <div className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg">
-                                                <Star size={20} />
-                                            </div>
-                                            <h3 className="text-xl font-black text-[#003366] font-heading">أفضل الأجهزة المقترحة لك</h3>
-                                        </div>
-                                        <AffiliateProductBox
-                                            title="أيفون 15 برو - سعة 256 جيجا"
-                                            description="أحدث إصدار من أبل مع معالج A17 Pro القوي وتصميم من التيتانيوم. مثالي لمن يبحث عن الأداء الفائق."
-                                            price="4,299"
-                                            imageUrl="https://m.media-amazon.com/images/I/81SigAnN1KL._AC_SL1500_.jpg"
-                                            affiliateUrl="https://amazon.sa"
-                                            store="amazon"
-                                            isFeatured={true}
-                                        />
-                                    </div>
-                                )}
 
-                                {/* Mid Content Ad - After first paragraph */}
-                                {showAds && <AdUnit slotId="mid-content" placement="article_middle" format="auto" className="my-8" />}
+
+
 
                                 {/* Tags */}
                                 <div className="mt-16 pt-12 border-t border-gray-100 flex flex-wrap gap-3">
                                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-3">العلامات:</span>
-                                    {['حلول_تقنية', 'شروحات', 'المملكة'].map(tag => (
-                                        <span key={tag} className="px-4 py-1.5 bg-gray-50 text-gray-500 rounded-full text-[11px] font-bold hover:bg-[#003366] hover:text-white transition-all cursor-pointer">#{tag}</span>
-                                    ))}
+                                    {(article.tags && article.tags.length > 0) ? (
+                                        article.tags.map((tag: string) => (
+                                            <span key={tag} className="px-4 py-1.5 bg-gray-50 text-gray-500 rounded-full text-[11px] font-bold hover:bg-[#003366] hover:text-white transition-all cursor-pointer">#{tag}</span>
+                                        ))
+                                    ) : (
+                                        <span className="text-xs text-gray-300">لا توجد علامات</span>
+                                    )}
                                 </div>
 
                             </div>

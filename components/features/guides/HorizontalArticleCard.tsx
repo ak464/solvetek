@@ -18,13 +18,13 @@ export function HorizontalArticleCard({ article, className }: HorizontalArticleC
 
     return (
         <div className={cn(
-            "group flex flex-col md:flex-row gap-8 p-6 bg-white border-b border-gray-100 last:border-0 hover:border-transparent hover:shadow-2xl hover:shadow-[#003366]/10 hover:rounded-2xl transition-all duration-300 relative hover:z-10",
+            "group flex flex-row gap-4 sm:gap-6 md:gap-8 p-4 md:p-6 bg-white border-b border-gray-100 last:border-0 hover:border-transparent hover:shadow-2xl hover:shadow-[#003366]/10 hover:rounded-2xl transition-all duration-300 relative hover:z-10",
             className
         )}>
             {/* Thumbnail - Sharp Almuhtarif Style */}
             <Link
                 href={link}
-                className="w-[150px] h-[90px] sm:w-[220px] sm:h-[130px] md:w-[280px] md:h-[160px] bg-gray-50 rounded-lg flex-shrink-0 style-image-container overflow-hidden relative shadow-sm border border-gray-100 block"
+                className="w-[100px] h-[70px] sm:w-[220px] sm:h-[130px] md:w-[280px] md:h-[160px] bg-gray-50 rounded-lg flex-shrink-0 style-image-container overflow-hidden relative shadow-sm border border-gray-100 block"
             >
                 {coverImage ? (
                     <img
@@ -42,9 +42,9 @@ export function HorizontalArticleCard({ article, className }: HorizontalArticleC
                 </div>
             </Link>
 
-            <div className="flex-1 min-w-0 pr-2 flex flex-col justify-between py-1">
+            <div className="flex-1 min-w-0 pr-2 flex flex-col justify-between py-0.5">
                 <Link href={link} className="block group/title">
-                    <h3 className="text-lg md:text-xl font-black text-[#003366] group-hover/title:text-blue-600 transition-colors mb-2 font-heading leading-tight tracking-tight">
+                    <h3 className="text-sm sm:text-lg md:text-xl font-black text-[#003366] group-hover/title:text-blue-600 transition-colors mb-2 font-heading leading-tight tracking-tight line-clamp-2 md:line-clamp-none">
                         {article.title}
                     </h3>
 

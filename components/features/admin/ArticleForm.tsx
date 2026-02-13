@@ -27,6 +27,7 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
         is_published: initialData?.is_published || false,
         ads_enabled: initialData?.ads_enabled ?? true,
         affiliate_enabled: initialData?.affiliate_enabled ?? true,
+        tags: initialData?.tags?.join(', ') || "",
     });
 
     const [affiliateLinks, setAffiliateLinks] = useState<AffiliateLink[]>([]);
@@ -99,6 +100,7 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
             is_published: formData.is_published,
             ads_enabled: formData.ads_enabled,
             affiliate_enabled: formData.affiliate_enabled,
+            tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0),
             updated_at: new Date().toISOString(),
             ...(isEditing ? {} : { published_at: formData.is_published ? new Date().toISOString() : null })
         };
@@ -174,6 +176,21 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
                         onChange={e => setFormData({ ...formData, excerpt: e.target.value })}
                         className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
                     />
+
+                    <div className="mt-6 border-t border-gray-50 pt-6">
+                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-gray-800">
+                            <Sparkles size={20} className="text-blue-500" />
+                            الكلمات الدلالية (Tags)
+                        </h3>
+                        <input
+                            type="text"
+                            placeholder="كلمات مفتاحية مفصولة بفواصل (مثال: تقنية, شروحات, ايفون)"
+                            value={formData.tags}
+                            onChange={e => setFormData({ ...formData, tags: e.target.value })}
+                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+                        />
+                        <p className="text-xs text-gray-400 mt-2">افصل بين الكلمات بفاصلة (،)</p>
+                    </div>
                 </div>
 
                 {/* Monetization Section */}
