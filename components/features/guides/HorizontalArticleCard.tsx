@@ -37,9 +37,6 @@ export function HorizontalArticleCard({ article, className }: HorizontalArticleC
                         📁
                     </div>
                 )}
-                <div className="absolute top-3 right-3 px-2 py-0.5 bg-blue-600 text-white text-[10px] font-black rounded shadow-md uppercase tracking-wider">
-                    {article.category?.name_ar}
-                </div>
             </Link>
 
             <div className="flex-1 min-w-0 pr-2 flex flex-col justify-between py-0.5">
