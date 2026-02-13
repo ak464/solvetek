@@ -46,9 +46,6 @@ export function ArticleCard({ article, className, variant = "default" }: Article
 
                 {/* Content Overlay */}
                 <div className="absolute inset-0 z-20 p-6 flex flex-col justify-end text-right">
-                    <span className="bg-white text-[#003366] text-[10px] font-black uppercase px-3 py-1 rounded w-fit mb-3 tracking-widest leading-none shadow-xl">
-                        {article.category?.name_ar}
-                    </span>
                     <h3 className={cn(
                         "font-black text-white leading-tight font-heading group-hover:underline decoration-blue-400 decoration-4 underline-offset-8 transition-all",
                         isPoster ? "text-xl md:text-3xl" : "text-base md:text-lg"
@@ -82,9 +79,6 @@ export function ArticleCard({ article, className, variant = "default" }: Article
                     ) : (
                         <div className="absolute inset-0 bg-blue-50 opacity-20" />
                     )}
-                    <span className="absolute top-3 right-3 bg-blue-600 px-2 py-1 rounded text-[9px] font-black text-white uppercase tracking-tighter shadow-md">
-                        {article.category?.name_ar}
-                    </span>
                 </div>
             </Link>
 

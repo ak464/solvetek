@@ -1,10 +1,21 @@
 "use client";
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { BarChart3 } from 'lucide-react';
 
 export function AnalyticsChart({ data }: { data: any[] }) {
     if (!data || data.length === 0) {
-        return <div className="h-64 flex items-center justify-center text-gray-400">لا توجد بيانات كافية للرسم البياني</div>;
+        return (
+            <div className="h-[400px] w-full bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col items-center justify-center text-center">
+                <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-300 mb-4">
+                    <BarChart3 size={32} />
+                </div>
+                <h3 className="text-lg font-black text-[#003366] mb-1">لا توجد بيانات تحليلية</h3>
+                <p className="text-sm font-bold text-gray-400 max-w-xs">
+                    سيتم عرض المخطط البياني هنا بمجرد تجميع بيانات الزيارات الكافية للموقع.
+                </p>
+            </div>
+        );
     }
 
     return (
