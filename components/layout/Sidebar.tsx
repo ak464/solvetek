@@ -26,7 +26,7 @@ async function TrendingArticles() {
                         href={`/guides/${article.category?.slug}/${article.slug}`}
                         className="flex gap-4 group"
                     >
-                        <div className="w-20 h-20 bg-gray-50 rounded-xl flex-shrink-0 flex items-center justify-center text-3xl overflow-hidden border border-gray-100 group-hover:border-blue-600 transition-all duration-300">
+                        <div className="w-20 h-20 bg-gray-50 dark:bg-gray-800 rounded-xl flex-shrink-0 flex items-center justify-center text-3xl overflow-hidden border border-gray-100 dark:border-gray-700 group-hover:border-blue-600 dark:group-hover:border-blue-500 transition-all duration-300">
                             {coverImage ? (
                                 <img src={coverImage} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                             ) : (
@@ -34,7 +34,7 @@ async function TrendingArticles() {
                             )}
                         </div>
                         <div className="flex-1 min-w-0 pr-2 flex flex-col justify-center">
-                            <h4 className="text-[12px] font-black text-[#003366] line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
+                            <h4 className="text-[12px] font-black text-[#003366] dark:text-gray-200 line-clamp-2 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                                 {article.title}
                             </h4>
                             <span className="text-[10px] font-bold text-gray-400 mt-1 uppercase tracking-wider">{article.category?.name_ar}</span>
@@ -60,17 +60,17 @@ async function SidebarRecommendation() {
     if (!recommendation) return null;
 
     return (
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm relative group overflow-hidden">
+        <div className="bg-white dark:bg-gray-900 p-6 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm relative group overflow-hidden transition-colors">
             <div className="mb-4 flex items-center justify-between">
-                <span className="text-[9px] font-black text-blue-600 bg-blue-50 px-2 py-0.5 rounded uppercase tracking-widest">توصية اليوم</span>
+                <span className="text-[9px] font-black text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded uppercase tracking-widest">توصية اليوم</span>
                 <ShoppingBag size={14} className="text-gray-300" />
             </div>
 
-            <div className="aspect-square bg-gray-50 rounded-2xl mb-4 p-4 flex items-center justify-center group-hover:bg-blue-50 transition-colors">
+            <div className="aspect-square bg-gray-50 dark:bg-gray-800 rounded-2xl mb-4 p-4 flex items-center justify-center group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors">
                 <div className="text-4xl">📦</div>
             </div>
 
-            <h4 className="text-[13px] font-black text-[#003366] mb-2 leading-tight line-clamp-2">{recommendation.name}</h4>
+            <h4 className="text-[13px] font-black text-[#003366] dark:text-white mb-2 leading-tight line-clamp-2">{recommendation.name}</h4>
             <p className="text-[10px] font-bold text-gray-400 mb-4 line-clamp-2">{recommendation.description || 'منتج مميز نوصي به لزوارنا الكرام.'}</p>
 
             <a
@@ -105,12 +105,12 @@ export async function Sidebar() {
         <aside className="space-y-12 sticky top-24">
             {/* Almuhtarif Social Box */}
             {showSocialBox && (
-                <div className="bg-[#ffffff] p-6 rounded-2xl border border-gray-100 shadow-sm" style={{ backgroundColor: '#ffffff' }}>
-                    <h3 className="text-[10px] font-black text-[#003366] uppercase tracking-[0.3em] mb-6 border-b border-gray-100 pb-4">تابعنا</h3>
+                <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm transition-colors">
+                    <h3 className="text-[10px] font-black text-[#003366] dark:text-white uppercase tracking-[0.3em] mb-6 border-b border-gray-100 dark:border-gray-800 pb-4">تابعنا</h3>
                     <div className="grid grid-cols-3 gap-3">
                         {/* Social Icons Logic */}
                         {[
-                            { key: 'social_facebook', icon: Facebook, color: "text-[#003366] bg-blue-50" },
+                            { key: 'social_facebook', icon: Facebook, color: "text-[#003366] dark:text-blue-200 bg-blue-50 dark:bg-blue-900/20" },
                             { key: 'social_twitter', icon: Twitter, color: "text-sky-500 bg-sky-50" },
                             { key: 'social_youtube', icon: Youtube, color: "text-red-500 bg-red-50" },
                             { key: 'social_instagram', icon: Instagram, color: "text-pink-600 bg-pink-50" },
@@ -132,9 +132,9 @@ export async function Sidebar() {
             )}
 
             {/* Almuhtarif Trending Box - SCALED UP */}
-            <div className="bg-[#ffffff] p-8 rounded-3xl border border-gray-100 shadow-xl shadow-blue-900/5 relative overflow-hidden">
+            <div className="bg-white dark:bg-gray-900 p-8 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-xl shadow-blue-900/5 relative overflow-hidden transition-colors">
                 <div className="absolute top-0 right-0 w-24 h-1 bg-blue-600" />
-                <h3 className="text-sm font-black text-[#003366] uppercase tracking-[0.2em] mb-8 flex items-center gap-3 border-b border-gray-50 pb-5">
+                <h3 className="text-sm font-black text-[#003366] dark:text-white uppercase tracking-[0.2em] mb-8 flex items-center gap-3 border-b border-gray-50 dark:border-gray-800 pb-5">
                     <TrendingUp size={20} className="text-blue-600" />
                     أكثر المواضيع مشاهدة خلال هذا الاسبوع
                 </h3>

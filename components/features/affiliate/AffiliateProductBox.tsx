@@ -60,9 +60,9 @@ export function AffiliateProductBox({
 
     return (
         <div className={cn(
-            "group relative bg-white border border-gray-100 flex gap-6 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/5 overflow-hidden",
+            "group relative bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 flex gap-6 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/5 dark:hover:shadow-blue-900/20 overflow-hidden",
             isCompact ? "flex-col rounded-[2rem] p-5 hover:-translate-y-1" : "flex-col md:flex-row rounded-[2.5rem] p-6 md:p-8 hover:-translate-y-1",
-            isFeatured && "ring-2 ring-blue-600/20 bg-blue-50/10",
+            isFeatured && "ring-2 ring-blue-600/20 bg-blue-50/10 dark:bg-blue-900/10",
             className
         )}>
             {/* Advertising Label - Hide in compact */}
@@ -70,7 +70,7 @@ export function AffiliateProductBox({
 
             {/* Product Image */}
             <div className={cn(
-                "bg-white rounded-3xl overflow-hidden border border-gray-50 flex items-center justify-center p-4 relative flex-shrink-0 group-hover:border-blue-100 transition-colors",
+                "bg-white dark:bg-gray-700 rounded-3xl overflow-hidden border border-gray-50 dark:border-gray-600 flex items-center justify-center p-4 relative flex-shrink-0 group-hover:border-blue-100 dark:group-hover:border-blue-500/30 transition-colors",
                 isCompact ? "w-full aspect-square" : "w-full md:w-[240px] aspect-square"
             )}>
                 <img
@@ -98,29 +98,29 @@ export function AffiliateProductBox({
                     )}
 
                     <h3 className={cn(
-                        "font-black text-[#003366] font-heading leading-tight",
+                        "font-black text-[#003366] dark:text-blue-100 font-heading leading-tight",
                         isCompact ? "text-lg line-clamp-2" : "text-xl md:text-2xl leading-7 md:leading-9"
                     )}>
                         {title}
                     </h3>
 
                     {!isCompact && (
-                        <p className="text-gray-500 text-sm font-bold leading-relaxed line-clamp-2">
+                        <p className="text-gray-500 dark:text-gray-400 text-sm font-bold leading-relaxed line-clamp-2">
                             {description}
                         </p>
                     )}
 
                     <div className={cn("flex items-center gap-6 pt-2", isCompact ? "justify-between" : "")}>
                         <div className="flex flex-col">
-                            <span className="text-[10px] font-black text-gray-400 uppercase">السعر التقريبي</span>
-                            <span className={cn("font-black text-blue-600 font-heading", isCompact ? "text-xl" : "text-2xl")}>{price}<span className="text-xs mr-1 opacity-60">رس</span></span>
+                            <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase">السعر التقريبي</span>
+                            <span className={cn("font-black text-blue-600 dark:text-blue-400 font-heading", isCompact ? "text-xl" : "text-2xl")}>{price}<span className="text-xs mr-1 opacity-60">رس</span></span>
                         </div>
                         {!isCompact && (
                             <>
-                                <div className="w-px h-10 bg-gray-100" />
+                                <div className="w-px h-10 bg-gray-100 dark:bg-gray-700" />
                                 <div className="flex flex-col">
-                                    <span className="text-[10px] font-black text-gray-400 uppercase">شهادة الجودة</span>
-                                    <div className="flex items-center gap-1.5 text-green-600 font-black text-xs">
+                                    <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase">شهادة الجودة</span>
+                                    <div className="flex items-center gap-1.5 text-green-600 dark:text-green-400 font-black text-xs">
                                         <ShieldCheck size={16} />
                                         موصى به
                                     </div>
@@ -150,7 +150,7 @@ export function AffiliateProductBox({
                             href={normalizedUrl}
                             target="_blank"
                             rel="nofollow noopener"
-                            className="w-full sm:w-auto px-8 h-14 rounded-2xl border-2 border-gray-100 flex items-center justify-center gap-2 font-black text-[#003366] hover:bg-gray-50 transition-colors"
+                            className="w-full sm:w-auto px-8 h-14 rounded-2xl border-2 border-gray-100 dark:border-gray-700 flex items-center justify-center gap-2 font-black text-[#003366] dark:text-blue-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                         >
                             <ExternalLink size={18} />
                             المراجعات

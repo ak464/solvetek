@@ -1,14 +1,22 @@
 import { MetadataRoute } from 'next'
+import { createClient } from '@/lib/supabase/server'
 
-export default function robots(): MetadataRoute.Robots {
-    const BASE_URL = 'https://solvetek.net' // Final domain for SolveTek
+export default async function robots(): Promise<MetadataRoute.Robots> {
+    const supabase = await createClient()
+    const { data: settings } = await supabase
+        .from('site_settings')
+        .select('value')
+        .eq('key', 'site_url')
+        .single()
+
+    const siteUrl = settings?.value || 'https://solvetek.net'
 
     return {
         rules: {
             userAgent: '*',
             allow: '/',
-            disallow: ['/admin/', '/api/', '/login'],
+            disallow: ['/admin/', '/api/'],
         },
-        sitemap: `${BASE_URL}/sitemap.xml`,
+        sitemap: `${siteUrl}/sitemap.xml`,
     }
 }

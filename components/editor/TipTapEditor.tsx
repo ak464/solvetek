@@ -50,7 +50,7 @@ export function TipTapEditor({ content, onChange }: TipTapEditorProps) {
         content,
         editorProps: {
             attributes: {
-                class: 'prose prose-blue prose-lg focus:outline-none min-h-[400px] max-w-none p-6 text-right',
+                class: 'prose prose-blue dark:prose-invert prose-lg focus:outline-none min-h-[400px] max-w-none p-6 text-right',
                 dir: 'rtl',
             },
         },
@@ -69,7 +69,7 @@ export function TipTapEditor({ content, onChange }: TipTapEditorProps) {
             onClick={onClick}
             className={`p-2 rounded-md transition-all duration-200 hover:scale-105 ${isActive
                 ? 'bg-blue-600 text-white shadow-md'
-                : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
                 } ${className}`}
             title={title}
         >
@@ -85,10 +85,10 @@ export function TipTapEditor({ content, onChange }: TipTapEditorProps) {
     }
 
     return (
-        <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-xl transition-all hover:shadow-2xl">
+        <div className="border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden bg-white dark:bg-gray-900 shadow-xl transition-all hover:shadow-2xl">
             {/* Premium Toolbar */}
-            <div className="flex flex-wrap gap-2 p-3 border-b border-gray-100 bg-gray-50/50 backdrop-blur-sm sticky top-0 z-10">
-                <div className="flex gap-1 bg-white p-1 rounded-lg border border-gray-200 shadow-sm">
+            <div className="flex flex-wrap gap-2 p-3 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 backdrop-blur-sm sticky top-0 z-10">
+                <div className="flex gap-1 bg-white dark:bg-gray-800 p-1 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
                     <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="Bold">
                         <Bold size={18} strokeWidth={2.5} />
                     </ToolbarButton>
@@ -100,7 +100,7 @@ export function TipTapEditor({ content, onChange }: TipTapEditorProps) {
                     </ToolbarButton>
                 </div>
 
-                <div className="flex gap-1 bg-white p-1 rounded-lg border border-gray-200 shadow-sm">
+                <div className="flex gap-1 bg-white dark:bg-gray-800 p-1 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
                     <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} isActive={editor.isActive('heading', { level: 2 })} title="Main Heading">
                         <Heading1 size={18} strokeWidth={2.5} />
                     </ToolbarButton>
@@ -109,7 +109,7 @@ export function TipTapEditor({ content, onChange }: TipTapEditorProps) {
                     </ToolbarButton>
                 </div>
 
-                <div className="flex gap-1 bg-white p-1 rounded-lg border border-gray-200 shadow-sm">
+                <div className="flex gap-1 bg-white dark:bg-gray-800 p-1 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
                     <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive('bulletList')} title="Bullet List">
                         <List size={18} strokeWidth={2.5} />
                     </ToolbarButton>
@@ -118,7 +118,7 @@ export function TipTapEditor({ content, onChange }: TipTapEditorProps) {
                     </ToolbarButton>
                 </div>
 
-                <div className="flex gap-1 bg-white p-1 rounded-lg border border-gray-200 shadow-sm">
+                <div className="flex gap-1 bg-white dark:bg-gray-800 p-1 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
                     <ToolbarButton onClick={() => {
                         const url = window.prompt('أدخل الرابط:')
                         if (url) editor.chain().focus().setLink({ href: url }).run()
@@ -130,7 +130,7 @@ export function TipTapEditor({ content, onChange }: TipTapEditorProps) {
                     </ToolbarButton>
                 </div>
 
-                <div className="flex gap-1 bg-white p-1 rounded-lg border border-gray-200 shadow-sm">
+                <div className="flex gap-1 bg-white dark:bg-gray-800 p-1 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
                     <input
                         type="color"
                         onInput={e => editor.chain().focus().setColor((e.target as HTMLInputElement).value).run()}
@@ -144,7 +144,7 @@ export function TipTapEditor({ content, onChange }: TipTapEditorProps) {
 
                 <div className="flex-1" />
 
-                <div className="flex gap-1 bg-white p-1 rounded-lg border border-gray-200 shadow-sm">
+                <div className="flex gap-1 bg-white dark:bg-gray-800 p-1 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
                     <ToolbarButton onClick={() => editor.chain().focus().undo().run()} title="Undo">
                         <Undo size={18} />
                     </ToolbarButton>
@@ -155,12 +155,12 @@ export function TipTapEditor({ content, onChange }: TipTapEditorProps) {
             </div>
 
             {/* Content Area */}
-            <div className="p-2 bg-[#fdfdfd]">
-                <EditorContent editor={editor} className="bg-white min-h-[400px]" />
+            <div className="p-2 bg-[#fdfdfd] dark:bg-gray-950">
+                <EditorContent editor={editor} className="bg-white dark:bg-gray-900 min-h-[400px]" />
             </div>
 
             {/* Footer Info */}
-            <div className="px-4 py-2 bg-gray-50 border-t border-gray-100 flex justify-between text-xs text-gray-400 font-medium">
+            <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 flex justify-between text-xs text-gray-400 font-medium">
                 <span>جاري تحرير المحتوى...</span>
                 <div className="flex gap-4">
                     <span>الكلمات: {editor.storage.characterCount?.words?.() || 0}</span>

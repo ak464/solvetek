@@ -21,13 +21,13 @@ export function FeedbackWidget({ articleTitle }: FeedbackWidgetProps) {
     const whatsappLink = `https://wa.me/?text=${encodeURIComponent(`مرحباً سولفتيك، أحتاج مساعدة بخصوص مقال: ${articleTitle}`)}`;
 
     return (
-        <div className="mt-16 bg-gray-50 border border-gray-100 rounded-[2rem] p-8 md:p-12 transition-all duration-500 overflow-hidden relative">
+        <div className="mt-16 bg-muted/50 border border-border rounded-[2rem] p-8 md:p-12 transition-all duration-500 overflow-hidden relative">
             <div className="relative z-10">
                 {!voted ? (
                     <div className="text-center space-y-8">
                         <div>
-                            <h3 className="text-xl md:text-2xl font-black text-[#003366] font-heading mb-3">هل أفادك هذا الشرح؟</h3>
-                            <p className="text-gray-400 font-bold text-sm">تقييمك يساعدنا على تحسين جودة المحتوى التقني في المملكة.</p>
+                            <h3 className="text-xl md:text-2xl font-black text-primary font-heading mb-3">هل أفادك هذا الشرح؟</h3>
+                            <p className="text-muted-foreground font-bold text-sm">تقييمك يساعدنا على تحسين جودة المحتوى التقني في المملكة.</p>
                         </div>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -49,17 +49,17 @@ export function FeedbackWidget({ articleTitle }: FeedbackWidgetProps) {
                     </div>
                 ) : voted === 'yes' ? (
                     <div className="text-center py-4 animate-in fade-in zoom-in duration-500">
-                        <div className="w-20 h-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner ring-8 ring-green-50/50">
+                        <div className="w-20 h-20 bg-green-500/10 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner ring-8 ring-green-500/5">
                             <CheckCircle2 size={40} />
                         </div>
-                        <h3 className="text-2xl font-black text-[#003366] font-heading mb-2">شكراً لتقييمك!</h3>
-                        <p className="text-gray-400 font-bold">يسعدنا أن الشرح كان مفيداً لك.</p>
+                        <h3 className="text-2xl font-black text-primary font-heading mb-2">شكراً لتقييمك!</h3>
+                        <p className="text-muted-foreground font-bold">يسعدنا أن الشرح كان مفيداً لك.</p>
                     </div>
                 ) : (
                     <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
                         <div className="text-center">
-                            <h3 className="text-2xl font-black text-[#003366] font-heading mb-3">نعتذر لذلك! 😔</h3>
-                            <p className="text-gray-400 font-bold text-sm mb-8">هل واجهت صعوبة في فهم الخطوات؟ يمكنك التواصل معنا مباشرة وسنساعدك.</p>
+                            <h3 className="text-2xl font-black text-primary font-heading mb-3">نعتذر لذلك! 😔</h3>
+                            <p className="text-muted-foreground font-bold text-sm mb-8">هل واجهت صعوبة في فهم الخطوات؟ يمكنك التواصل معنا مباشرة وسنساعدك.</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -74,9 +74,9 @@ export function FeedbackWidget({ articleTitle }: FeedbackWidgetProps) {
                             </a>
                             <button
                                 onClick={() => setVoted(null)}
-                                className="p-6 bg-white border border-gray-100 text-[#003366] rounded-[1.5rem] flex flex-col items-center gap-3 hover:bg-gray-50 transition-colors shadow-sm"
+                                className="p-6 bg-card border border-border text-primary rounded-[1.5rem] flex flex-col items-center gap-3 hover:bg-muted transition-colors shadow-sm"
                             >
-                                <Send size={32} className="text-blue-600" />
+                                <Send size={32} className="text-primary" />
                                 <span className="font-black text-sm">إرسال ملاحظة مكتوبة</span>
                             </button>
                         </div>

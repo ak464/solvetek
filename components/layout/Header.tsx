@@ -6,6 +6,7 @@ import { Menu, X, Search, Smartphone, Wifi, Cpu, Layers, LayoutGrid } from "luci
 import { usePathname } from "next/navigation";
 import { Category } from "@/lib/types/database";
 import { CATEGORY_ICONS } from "@/lib/config/icons"; // Import global icons
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 export function Header({ categories = [], siteName = "SolveTek" }: { categories?: Category[], siteName?: string }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,14 +28,14 @@ export function Header({ categories = [], siteName = "SolveTek" }: { categories?
     ];
 
     return (
-        <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-            <nav className="mx-auto flex max-w-[1600px] items-center justify-between p-6 lg:px-12" aria-label="Global">
+        <header className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 sticky top-0 z-50 transition-colors">
+            <nav className="mx-auto flex max-w-[1600px] items-center justify-between p-6 lg:px-12 transition-colors" aria-label="Global">
                 <div className="flex lg:flex-1">
                     <Link href="/" className="-m-1 p-1 flex items-center gap-2.5 group">
                         <div className="bg-[#003366] text-white p-1.5 rounded-lg shadow-lg group-hover:scale-110 transition-transform">
                             <Cpu size={22} />
                         </div>
-                        <span className="text-xl font-black tracking-tighter text-[#003366] font-heading lowercase">
+                        <span className="text-xl font-black tracking-tighter text-[#003366] dark:text-white font-heading lowercase">
                             {siteName}
                         </span>
                     </Link>
@@ -51,7 +52,7 @@ export function Header({ categories = [], siteName = "SolveTek" }: { categories?
                                 className={`text-sm font-black leading-6 transition-all duration-200 flex items-center gap-2 px-4 py-2 rounded-lg
                   ${isActive
                                         ? 'text-blue-600 bg-blue-50'
-                                        : 'text-[#003366] hover:text-blue-600 hover:bg-gray-50'
+                                        : 'text-[#003366] dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800'
                                     }`}
                             >
                                 {item.icon && <item.icon size={20} strokeWidth={2.5} />}
@@ -62,10 +63,11 @@ export function Header({ categories = [], siteName = "SolveTek" }: { categories?
                 </div>
 
                 <div className="flex flex-1 justify-end items-center gap-3">
-                    <div className="flex lg:hidden">
+                    <ThemeToggle />
+                    <div className="flex lg:hidden ml-2">
                         <button
                             type="button"
-                            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 hover:bg-gray-50"
+                            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
                             onClick={() => setIsMenuOpen(true)}
                         >
                             <Menu size={24} />
@@ -76,17 +78,17 @@ export function Header({ categories = [], siteName = "SolveTek" }: { categories?
 
             {/* Mobile Menu */}
             {isMenuOpen && (
-                <div className="lg:hidden fixed inset-0 z-50 bg-white/95 backdrop-blur-sm p-4 overflow-y-auto animate-in slide-in-from-right duration-200">
-                    <div className="flex items-center justify-between mb-8 border-b border-gray-100 pb-4">
+                <div className="lg:hidden fixed inset-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur-md p-4 overflow-y-auto animate-in slide-in-from-right duration-200">
+                    <div className="flex items-center justify-between mb-8 border-b border-gray-100 dark:border-gray-900 pb-4">
                         <Link href="/" className="-m-1.5 p-1.5 flex items-center gap-2" onClick={() => setIsMenuOpen(false)}>
                             <div className="bg-blue-600 text-white p-1.5 rounded-lg">
                                 <Cpu size={20} />
                             </div>
-                            <span className="text-lg font-bold text-gray-900">المساعد التقني</span>
+                            <span className="text-lg font-bold text-gray-900 dark:text-white">المساعد التقني</span>
                         </Link>
                         <button
                             type="button"
-                            className="-m-2.5 rounded-md p-2.5 text-gray-700 hover:bg-gray-100"
+                            className="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                             onClick={() => setIsMenuOpen(false)}
                         >
                             <X size={24} />
@@ -100,7 +102,7 @@ export function Header({ categories = [], siteName = "SolveTek" }: { categories?
                                     key={item.name}
                                     href={item.href}
                                     className={`-mx-3 block rounded-xl px-4 py-3 text-base font-bold leading-7 flex items-center gap-3 transition-colors
-                    ${isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'}`}
+                    ${isActive ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
                                     onClick={() => setIsMenuOpen(false)}
                                 >
                                     {item.icon && <item.icon size={20} className={isActive ? "text-blue-600" : "text-gray-400"} />}

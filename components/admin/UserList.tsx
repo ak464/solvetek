@@ -126,19 +126,19 @@ export function UserList() {
     };
 
     if (loading) return (
-        <div className="flex items-center justify-center p-12 text-gray-400">
+        <div className="flex items-center justify-center p-12 text-muted-foreground">
             <Loader2 className="animate-spin mr-2" /> جاري تحميل الأعضاء...
         </div>
     );
 
     return (
-        <div className="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden relative">
+        <div className="bg-card rounded-[2rem] border border-border shadow-sm overflow-hidden relative transition-colors">
             {/* Header Actions */}
-            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/30">
-                <h3 className="font-bold text-gray-700">قائمة الأعضاء ({users.length})</h3>
+            <div className="p-6 border-b border-border flex justify-between items-center bg-muted/30 transition-colors">
+                <h3 className="font-bold text-foreground">قائمة الأعضاء ({users.length})</h3>
                 <button
                     onClick={() => setShowInviteHelp(true)}
-                    className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-200"
+                    className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-xl text-xs font-bold hover:opacity-90 transition shadow-lg shadow-primary/20"
                 >
                     <UserPlus size={16} />
                     إضافة مشرف جديد
@@ -147,37 +147,37 @@ export function UserList() {
 
             {/* Invite Modal */}
             {showInviteHelp && (
-                <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200" onClick={() => setShowInviteHelp(false)}>
+                <div className="fixed inset-0 z-[100] bg-background/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200" onClick={() => setShowInviteHelp(false)}>
                     <div
-                        className="bg-white border border-gray-200 shadow-2xl rounded-3xl p-8 max-w-lg w-full relative animate-in zoom-in-95 duration-200"
+                        className="bg-card border border-border shadow-2xl rounded-3xl p-8 max-w-lg w-full relative animate-in zoom-in-95 duration-200"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
                             onClick={() => setShowInviteHelp(false)}
-                            className="absolute top-4 left-4 text-gray-400 hover:text-red-500 p-2 rounded-full hover:bg-red-50 transition-colors"
+                            className="absolute top-4 left-4 text-muted-foreground hover:text-destructive p-2 rounded-full hover:bg-destructive/10 transition-colors"
                         >
                             <X size={24} />
                         </button>
 
                         <div className="flex flex-col items-center text-center gap-4">
-                            <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 mb-2">
+                            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-2">
                                 <UserPlus size={32} />
                             </div>
-                            <h3 className="text-xl font-black text-[#003366]">كيف تضيف مشرفاً جديداً؟</h3>
-                            <p className="text-sm text-gray-500 font-bold leading-relaxed">
+                            <h3 className="text-xl font-black text-primary">كيف تضيف مشرفاً جديداً؟</h3>
+                            <p className="text-sm text-muted-foreground font-bold leading-relaxed">
                                 نظام الحماية يتطلب أن يقوم كل شخص بتسجيل حسابه بنفسه لضمان أمان كلمة المرور.
                             </p>
 
-                            <div className="bg-gray-50 rounded-2xl p-6 w-full text-right space-y-4">
+                            <div className="bg-muted/50 rounded-2xl p-6 w-full text-right space-y-4">
                                 <div className="flex items-start gap-3">
-                                    <div className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</div>
-                                    <p className="text-xs font-bold text-gray-600">أرسل رابط التسجيل للشخص:</p>
+                                    <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</div>
+                                    <p className="text-xs font-bold text-muted-foreground">أرسل رابط التسجيل للشخص:</p>
                                 </div>
-                                <div className="flex items-center gap-2 bg-white border border-gray-200 p-2 rounded-lg" dir="ltr">
-                                    <code className="text-[10px] text-gray-500 flex-1 truncate">{typeof window !== 'undefined' ? `${window.location.origin}/login` : '/login'}</code>
+                                <div className="flex items-center gap-2 bg-card border border-border p-2 rounded-lg" dir="ltr">
+                                    <code className="text-[10px] text-muted-foreground flex-1 truncate">{typeof window !== 'undefined' ? `${window.location.origin}/login` : '/login'}</code>
                                     <button
                                         onClick={() => navigator.clipboard.writeText(window.location.origin + '/login')}
-                                        className="p-1.5 hover:bg-gray-100 rounded text-gray-400 hover:text-blue-600"
+                                        className="p-1.5 hover:bg-accent rounded text-muted-foreground hover:text-primary"
                                         title="نسخ الرابط"
                                     >
                                         <Copy size={14} />
@@ -185,19 +185,19 @@ export function UserList() {
                                 </div>
 
                                 <div className="flex items-start gap-3">
-                                    <div className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</div>
-                                    <p className="text-xs font-bold text-gray-600">اطلب منه اختيار "تسجيل جديد" وإنشاء حساب.</p>
+                                    <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</div>
+                                    <p className="text-xs font-bold text-muted-foreground">اطلب منه اختيار "تسجيل جديد" وإنشاء حساب.</p>
                                 </div>
 
                                 <div className="flex items-start gap-3">
-                                    <div className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</div>
-                                    <p className="text-xs font-bold text-gray-600">بمجرد تسجيله، سيظهر اسمه في هذه القائمة فوراً، ويمكنك ترقيته إلى "مشرف" من زر الصلاحية.</p>
+                                    <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</div>
+                                    <p className="text-xs font-bold text-muted-foreground">بمجرد تسجيله، سيظهر اسمه في هذه القائمة فوراً، ويمكنك ترقيته إلى "مشرف" من زر الصلاحية.</p>
                                 </div>
                             </div>
 
                             <button
                                 onClick={() => setShowInviteHelp(false)}
-                                className="w-full py-3 rounded-xl bg-gray-100 text-gray-700 font-bold text-sm hover:bg-gray-200 transition"
+                                className="w-full py-3 rounded-xl bg-muted text-muted-foreground font-bold text-sm hover:bg-accent transition"
                             >
                                 فهمت، شكراً
                             </button>
@@ -209,7 +209,7 @@ export function UserList() {
             <div className="overflow-x-auto">
                 <table className="w-full text-right">
                     <thead>
-                        <tr className="bg-gray-50/50 border-b border-gray-100 text-xs font-black text-gray-400 uppercase tracking-wider">
+                        <tr className="bg-muted/50 border-b border-border text-xs font-black text-muted-foreground uppercase tracking-wider">
                             <th className="px-6 py-4">العضو</th>
                             <th className="px-6 py-4">الصلاحية</th>
                             <th className="px-6 py-4">الحالة</th>
@@ -217,23 +217,23 @@ export function UserList() {
                             <th className="px-6 py-4">إجراءات</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-50">
+                    <tbody className="divide-y divide-border">
                         {users.map((user) => {
                             const online = isOnline(user.last_seen);
                             const isEditing = editingName === user.id;
 
                             return (
-                                <tr key={user.id} className="group hover:bg-blue-50/30 transition-colors">
+                                <tr key={user.id} className="group hover:bg-accent/50 transition-colors">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-gray-100 border border-gray-200 overflow-hidden relative shrink-0">
+                                            <div className="w-10 h-10 rounded-full bg-muted border border-border overflow-hidden relative shrink-0">
                                                 {user.avatar_url ? (
                                                     <img src={user.avatar_url} alt={user.username} className="w-full h-full object-cover" />
                                                 ) : (
                                                     <div className="w-full h-full flex items-center justify-center text-lg">👤</div>
                                                 )}
                                                 {online && (
-                                                    <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+                                                    <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-background rounded-full"></span>
                                                 )}
                                             </div>
                                             <div>
@@ -241,7 +241,7 @@ export function UserList() {
                                                     <div className="flex items-center gap-2">
                                                         <input
                                                             autoFocus
-                                                            className="text-sm border border-blue-500 rounded px-2 py-0.5 w-32 outline-none"
+                                                            className="text-sm border border-primary rounded px-2 py-0.5 w-32 outline-none bg-background text-foreground"
                                                             value={tempName}
                                                             onChange={e => setTempName(e.target.value)}
                                                             onKeyDown={e => {
@@ -254,13 +254,13 @@ export function UserList() {
                                                 ) : (
                                                     <div
                                                         onClick={() => startEditingKey(user)}
-                                                        className="font-black text-[#003366] text-sm cursor-pointer hover:text-blue-600 flex items-center gap-1 group/name"
+                                                        className="font-black text-primary text-sm cursor-pointer hover:opacity-80 flex items-center gap-1 group/name"
                                                     >
                                                         {user.username || 'مستخدم بدون اسم'}
-                                                        <span className="opacity-0 group-hover/name:opacity-100 text-[10px] text-gray-400 font-normal">(تعديل)</span>
+                                                        <span className="opacity-0 group-hover/name:opacity-100 text-[10px] text-muted-foreground font-normal">(تعديل)</span>
                                                     </div>
                                                 )}
-                                                <div className="text-[10px] text-gray-400 font-bold font-mono truncate max-w-[150px]" title={user.id}>{user.id}</div>
+                                                <div className="text-[10px] text-muted-foreground font-bold font-mono truncate max-w-[150px]" title={user.id}>{user.id}</div>
                                             </div>
                                         </div>
                                     </td>
@@ -276,11 +276,11 @@ export function UserList() {
                                                 </>
                                             ) : (
                                                 <div className="flex flex-col">
-                                                    <span className="text-xs font-bold text-gray-500">
+                                                    <span className="text-xs font-bold text-muted-foreground">
                                                         {formatLastSeen(user.last_seen)}
                                                     </span>
                                                     {user.last_seen && (
-                                                        <span className="text-[10px] text-gray-400" title={new Date(user.last_seen).toLocaleString('ar-SA')}>
+                                                        <span className="text-[10px] text-muted-foreground/60" title={new Date(user.last_seen).toLocaleString('ar-SA')}>
                                                             {new Date(user.last_seen).toLocaleDateString('ar-SA')}
                                                         </span>
                                                     )}
@@ -288,7 +288,7 @@ export function UserList() {
                                             )}
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 text-xs font-bold text-gray-400">
+                                    <td className="px-6 py-4 text-xs font-bold text-muted-foreground">
                                         {new Date(user.created_at).toLocaleDateString('ar-SA')}
                                     </td>
                                     <td className="px-6 py-4">
@@ -300,7 +300,7 @@ export function UserList() {
                                                     disabled={user.role === 'admin' && users.filter(u => u.role === 'admin').length <= 1} // Prevent removing last admin (basic check)
                                                     value={user.role}
                                                     onChange={(e) => updateUserRole(user.id, e.target.value)}
-                                                    className="bg-transparent text-xs font-bold text-gray-500 border border-gray-200 rounded-lg px-2 py-1 focus:border-blue-500 focus:outline-none cursor-pointer hover:bg-white hover:shadow-sm transition-all"
+                                                    className="bg-transparent text-xs font-bold text-muted-foreground border border-border rounded-lg px-2 py-1 focus:border-primary focus:outline-none cursor-pointer hover:bg-card hover:shadow-sm transition-all"
                                                 >
                                                     <option value="user">مستخدم (User)</option>
                                                     <option value="editor">محرر (Editor)</option>
@@ -314,7 +314,7 @@ export function UserList() {
                                             ) : (
                                                 <button
                                                     onClick={() => confirmEmail(user.id)}
-                                                    className="p-1.5 hover:bg-green-50 rounded text-gray-400 hover:text-green-600 transition-colors"
+                                                    className="p-1.5 hover:bg-green-500/10 rounded text-muted-foreground hover:text-green-600 transition-colors"
                                                     title="تأكيد الإيميل"
                                                 >
                                                     <MailCheck size={16} />
@@ -329,7 +329,7 @@ export function UserList() {
                 </table>
             </div>
             {users.length === 0 && (
-                <div className="p-12 text-center text-gray-400 font-bold">لا يوجد أعضاء في قاعدة البيانات.</div>
+                <div className="p-12 text-center text-muted-foreground font-bold">لا يوجد أعضاء في قاعدة البيانات.</div>
             )}
         </div>
     );

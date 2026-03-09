@@ -66,17 +66,17 @@ async function ArticlesTable({ searchParams, categories }: { searchParams: Searc
 
     return (
         <>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden transition-colors">
                 {/* Stats Bar */}
-                <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
+                <div className="px-6 py-4 bg-muted/30 border-b border-border flex items-center justify-between transition-colors">
                     <div className="flex gap-6">
                         <div>
-                            <span className="text-sm text-gray-500 font-medium">إجمالي النتائج: </span>
-                            <span className="text-lg font-black text-gray-900">{count || 0}</span>
+                            <span className="text-sm text-muted-foreground font-medium">إجمالي النتائج: </span>
+                            <span className="text-lg font-black text-foreground">{count || 0}</span>
                         </div>
                         <div>
-                            <span className="text-sm text-gray-500 font-medium">الصفحة: </span>
-                            <span className="text-lg font-black text-blue-600">{page} / {totalPages || 1}</span>
+                            <span className="text-sm text-muted-foreground font-medium">الصفحة: </span>
+                            <span className="text-lg font-black text-primary">{page} / {totalPages || 1}</span>
                         </div>
                     </div>
                 </div>
@@ -130,7 +130,7 @@ export default async function ArticlesListPage({ searchParams }: { searchParams:
     return (
         <div>
             <header className="flex justify-between items-center mb-8">
-                <h1 className="text-2xl font-bold text-gray-800">كل المقالات</h1>
+                <h1 className="text-2xl font-black text-gray-900 dark:text-white">كل المقالات</h1>
                 <Link
                     href="/admin/articles/new"
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition font-bold"
@@ -151,7 +151,7 @@ export default async function ArticlesListPage({ searchParams }: { searchParams:
             <Suspense fallback={
                 <div>
                     <ArticlesStatsSkeleton />
-                    <div className="mb-6 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <div className="mb-6 bg-white dark:bg-[#111827] rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
                         <div className="h-12 bg-gray-100 rounded-lg animate-pulse"></div>
                     </div>
                     <ArticlesTableSkeleton />

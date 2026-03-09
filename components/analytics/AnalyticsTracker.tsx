@@ -42,6 +42,7 @@ export function AnalyticsTracker() {
                 body: JSON.stringify({
                     session_id: id,
                     path: path,
+                    referrer: document.referrer,
                     timestamp: new Date().toISOString()
                 }),
             });

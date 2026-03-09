@@ -58,22 +58,22 @@ export function ArticlesFilters({ categories, authors }: FilterProps) {
     const hasActiveFilters = searchTerm || selectedCategory || selectedStatus || selectedAuthor || sortBy !== 'created_at' || sortOrder !== 'desc';
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="bg-card rounded-xl shadow-sm border border-border p-6 mb-6">
             {/* Search Bar */}
             <div className="flex gap-4 items-center mb-4">
                 <div className="flex-1 relative">
-                    <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                    <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
                     <input
                         type="text"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         placeholder="ابحث في عنوان المقال..."
-                        className="w-full pr-10 pl-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none font-medium"
+                        className="w-full pr-10 pl-4 py-3 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent outline-none font-medium placeholder:text-muted-foreground/50"
                     />
                 </div>
                 <button
                     onClick={() => setShowFilters(!showFilters)}
-                    className={`px-4 py-3 rounded-lg font-bold flex items-center gap-2 transition-colors ${showFilters ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    className={`px-4 py-3 rounded-lg font-bold flex items-center gap-2 transition-colors ${showFilters ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'
                         }`}
                 >
                     <Filter size={18} />
@@ -82,7 +82,7 @@ export function ArticlesFilters({ categories, authors }: FilterProps) {
                 {hasActiveFilters && (
                     <button
                         onClick={clearFilters}
-                        className="px-4 py-3 rounded-lg font-bold flex items-center gap-2 bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
+                        className="px-4 py-3 rounded-lg font-bold flex items-center gap-2 bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30 transition-colors"
                     >
                         <X size={18} />
                         مسح الكل
@@ -92,14 +92,14 @@ export function ArticlesFilters({ categories, authors }: FilterProps) {
 
             {/* Advanced Filters */}
             {showFilters && (
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-gray-100">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-border">
                     {/* Category Filter */}
                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">القسم</label>
+                        <label className="block text-sm font-bold text-foreground mb-2">القسم</label>
                         <select
                             value={selectedCategory}
                             onChange={(e) => setSelectedCategory(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-medium"
+                            className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary outline-none font-medium"
                         >
                             <option value="">كل الأقسام</option>
                             {categories.map((cat) => (
@@ -112,11 +112,11 @@ export function ArticlesFilters({ categories, authors }: FilterProps) {
 
                     {/* Status Filter */}
                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">الحالة</label>
+                        <label className="block text-sm font-bold text-foreground mb-2">الحالة</label>
                         <select
                             value={selectedStatus}
                             onChange={(e) => setSelectedStatus(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-medium"
+                            className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary outline-none font-medium"
                         >
                             <option value="">الكل</option>
                             <option value="published">منشور</option>
@@ -126,11 +126,11 @@ export function ArticlesFilters({ categories, authors }: FilterProps) {
 
                     {/* Author Filter */}
                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">الكاتب/المشرف</label>
+                        <label className="block text-sm font-bold text-foreground mb-2">الكاتب/المشرف</label>
                         <select
                             value={selectedAuthor}
                             onChange={(e) => setSelectedAuthor(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-medium"
+                            className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary outline-none font-medium"
                         >
                             <option value="">كل الكتّاب</option>
                             {authors.map((author) => (
@@ -143,12 +143,12 @@ export function ArticlesFilters({ categories, authors }: FilterProps) {
 
                     {/* Sort Options */}
                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">الترتيب</label>
+                        <label className="block text-sm font-bold text-foreground mb-2">الترتيب</label>
                         <div className="flex gap-2">
                             <select
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
-                                className="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-medium"
+                                className="flex-1 px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary outline-none font-medium"
                             >
                                 <option value="created_at">تاريخ الإنشاء</option>
                                 <option value="updated_at">آخر تحديث</option>
@@ -157,7 +157,7 @@ export function ArticlesFilters({ categories, authors }: FilterProps) {
                             </select>
                             <button
                                 onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                                className="px-3 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                                className="px-3 py-2 border border-border rounded-lg bg-background hover:bg-muted transition-colors text-foreground"
                                 title={sortOrder === 'asc' ? 'تصاعدي' : 'تنازلي'}
                             >
                                 {sortOrder === 'asc' ? <SortAsc size={20} /> : <SortDesc size={20} />}
@@ -169,25 +169,25 @@ export function ArticlesFilters({ categories, authors }: FilterProps) {
 
             {/* Active Filters Summary */}
             {hasActiveFilters && (
-                <div className="mt-4 pt-4 border-t border-gray-100 flex flex-wrap gap-2 items-center">
-                    <span className="text-sm font-bold text-gray-500">الفلاتر النشطة:</span>
+                <div className="mt-4 pt-4 border-t border-border flex flex-wrap gap-2 items-center">
+                    <span className="text-sm font-bold text-muted-foreground">الفلاتر النشطة:</span>
                     {searchTerm && (
-                        <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold">
+                        <span className="px-3 py-1 bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 rounded-full text-xs font-bold">
                             بحث: {searchTerm}
                         </span>
                     )}
                     {selectedCategory && (
-                        <span className="px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-bold">
+                        <span className="px-3 py-1 bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 rounded-full text-xs font-bold">
                             قسم: {categories.find(c => c.id === selectedCategory)?.name_ar}
                         </span>
                     )}
                     {selectedStatus && (
-                        <span className="px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-bold">
+                        <span className="px-3 py-1 bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300 rounded-full text-xs font-bold">
                             {selectedStatus === 'published' ? 'منشور' : 'مسودة'}
                         </span>
                     )}
                     {selectedAuthor && (
-                        <span className="px-3 py-1 bg-orange-50 text-orange-700 rounded-full text-xs font-bold">
+                        <span className="px-3 py-1 bg-orange-50 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300 rounded-full text-xs font-bold">
                             كاتب: {authors.find(a => a.id === selectedAuthor)?.username}
                         </span>
                     )}

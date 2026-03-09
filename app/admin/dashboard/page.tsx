@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { Users, Eye, FileText, Activity, TrendingUp, Clock, Globe } from "lucide-react";
 import { AnalyticsChart } from "@/components/admin/AnalyticsChart";
+import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
 
 export const metadata = {
     title: "لوحة المعلومات | SolveTek Admin",
@@ -22,6 +23,10 @@ export default async function DashboardPage() {
         .select('*')
         .order('date', { ascending: true })
         .limit(30);
+
+    // NEW: Fetch Detailed Analytics (RPCs)
+    const { data: trafficSources } = await supabase.rpc('get_traffic_sources', { days_ago: 30 });
+    const { data: deviceUsage } = await supabase.rpc('get_device_usage', { days_ago: 30 });
 
     // 3. Fetch Totals
     const { count: totalArticles } = await supabase.from('articles').select('*', { count: 'exact', head: true });
@@ -71,14 +76,14 @@ export default async function DashboardPage() {
     return (
         <div className="space-y-8">
             <div>
-                <h2 className="text-2xl font-black text-[#003366]">لوحة المعلومات</h2>
+                <h2 className="text-2xl font-black text-[#003366] dark:text-white">لوحة المعلومات</h2>
                 <p className="text-gray-500 text-sm font-bold mt-1">نظرة عامة على أداء الموقع والزوار.</p>
             </div>
 
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat, i) => (
-                    <div key={i} className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div key={i} className="bg-card p-6 rounded-3xl border border-border shadow-sm hover:shadow-md transition-all">
                         <div className="flex items-center justify-between mb-4">
                             <div className={`w-12 h-12 rounded-2xl ${stat.color} flex items-center justify-center text-white shadow-lg shadow-gray-200`}>
                                 <stat.icon size={24} />
@@ -89,15 +94,21 @@ export default async function DashboardPage() {
                             </span>}
                         </div>
                         <div>
-                            <div className="text-3xl font-black text-gray-900">{stat.value}</div>
-                            <div className="text-sm font-bold text-gray-400 mt-1">{stat.label}</div>
-                            <div className="text-xs font-bold text-gray-300 mt-2 pt-2 border-t border-gray-50">
+                            <div className="text-3xl font-black text-foreground">{stat.value}</div>
+                            <div className="text-sm font-bold text-muted-foreground mt-1">{stat.label}</div>
+                            <div className="text-xs font-bold text-muted-foreground/50 mt-2 pt-2 border-t border-border">
                                 {stat.subtext}
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
+
+            {/* Advanced Analytics Charts */}
+            <AnalyticsDashboard
+                trafficSources={trafficSources || []}
+                deviceUsage={deviceUsage || []}
+            />
 
             {/* Charts Section */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -107,24 +118,24 @@ export default async function DashboardPage() {
 
                 {/* Top Content */}
                 <div className="space-y-6">
-                    <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm h-full flex flex-col">
+                    <div className="bg-card p-6 rounded-3xl border border-border shadow-sm h-full flex flex-col">
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="bg-blue-50 p-2 rounded-lg text-blue-600">
+                            <div className="bg-primary/10 p-2 rounded-lg text-primary">
                                 <TrendingUp size={20} />
                             </div>
-                            <h3 className="font-black text-[#003366]">المقالات الأكثر قراءة</h3>
+                            <h3 className="font-black text-foreground">المقالات الأكثر قراءة</h3>
                         </div>
 
                         <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
                             <div className="space-y-4">
                                 {topArticles?.map((article, i) => (
-                                    <div key={i} className="flex items-center gap-4 p-3 hover:bg-gray-50 rounded-xl transition-colors border border-transparent hover:border-gray-100">
+                                    <div key={i} className="flex items-center gap-4 p-3 hover:bg-muted rounded-xl transition-colors border border-transparent hover:border-border">
                                         <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black ${i < 3 ? 'bg-yellow-50 text-yellow-600' : 'bg-gray-100 text-gray-500'}`}>
                                             #{i + 1}
                                         </span>
                                         <div className="flex-1 min-w-0">
-                                            <h4 className="text-sm font-bold text-gray-900 truncate">{article.title}</h4>
-                                            <span className="text-[10px] text-gray-400 font-bold">{article.views_count} مشاهدة</span>
+                                            <h4 className="text-sm font-bold text-foreground truncate">{article.title}</h4>
+                                            <span className="text-[10px] text-muted-foreground font-bold">{article.views_count} مشاهدة</span>
                                         </div>
                                     </div>
                                 ))}
@@ -141,4 +152,3 @@ export default async function DashboardPage() {
         </div>
     );
 }
-

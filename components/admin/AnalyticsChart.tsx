@@ -6,11 +6,11 @@ import { BarChart3 } from 'lucide-react';
 export function AnalyticsChart({ data }: { data: any[] }) {
     if (!data || data.length === 0) {
         return (
-            <div className="h-[400px] w-full bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col items-center justify-center text-center">
-                <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-300 mb-4">
+            <div className="h-[400px] w-full bg-white dark:bg-gray-900 p-6 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col items-center justify-center text-center">
+                <div className="w-16 h-16 bg-gray-50 dark:bg-gray-800 rounded-2xl flex items-center justify-center text-gray-300 mb-4">
                     <BarChart3 size={32} />
                 </div>
-                <h3 className="text-lg font-black text-[#003366] mb-1">لا توجد بيانات تحليلية</h3>
+                <h3 className="text-lg font-black text-[#003366] dark:text-blue-400 mb-1">لا توجد بيانات تحليلية</h3>
                 <p className="text-sm font-bold text-gray-400 max-w-xs">
                     سيتم عرض المخطط البياني هنا بمجرد تجميع بيانات الزيارات الكافية للموقع.
                 </p>
@@ -19,13 +19,13 @@ export function AnalyticsChart({ data }: { data: any[] }) {
     }
 
     return (
-        <div className="h-[400px] w-full bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+        <div className="h-[400px] w-full bg-white dark:bg-gray-900 p-6 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm">
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h3 className="text-lg font-black text-[#003366]">نمو الزيارات</h3>
+                    <h3 className="text-lg font-black text-[#003366] dark:text-blue-400">نمو الزيارات</h3>
                     <p className="text-sm font-bold text-gray-400">إحصائيات الزيارات خلال الأيام الماضية</p>
                 </div>
-                <select className="bg-gray-50 border-none text-sm font-bold text-gray-600 rounded-lg p-2">
+                <select className="bg-gray-50 dark:bg-gray-800 border-none text-sm font-bold text-gray-600 dark:text-gray-300 rounded-lg p-2">
                     <option>آخر 30 يوم</option>
                     <option>آخر 7 أيام</option>
                 </select>

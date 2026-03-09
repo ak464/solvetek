@@ -2,6 +2,9 @@
 
 @plugin "@tailwindcss/typography";
 
+/* تفعيل وضع الكلاس لـ Tailwind v4 ليعمل مع الزرار */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-blue-50: #f0f7ff;
   --color-blue-100: #e0efff;
@@ -10,14 +13,33 @@
   --color-blue-700: #0052a3;
   --color-gray-50: #f8f8f8;
   --color-gray-100: #eeeeee;
-  --color-gray-900: #003366;
-  /* SolveTek Primary Brand Color */
+  --color-gray-900: #111827;
   /* Pure Black for Titles */
 
   --color-brand-accent: #FF8000;
 
   --font-sans: var(--font-tajawal), 'Tajawal', sans-serif;
   --font-heading: var(--font-tajawal), 'Tajawal', sans-serif;
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
 }
 
 /* Ultra-Wide Scale & Font Refinements */
@@ -28,13 +50,59 @@ html {
   font-size: 16px;
 }
 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 215 100% 40%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 217 33% 17%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
 /* Global Body & Theme Defaults */
 body {
-  font-family: var(--font-tajawal), 'Tajawal', sans-serif;
+  @apply bg-background text-foreground;
+  font-family: var(--font-sans);
   font-feature-settings: "ss01", "ss02", "cv01", "cv02";
   line-height: 1.7;
-  background-color: #f7f9fb;
-  color: #1f2937;
 }
 
 /* Light Mode Specifics (Immutable Defaults) */
@@ -45,12 +113,50 @@ h4,
 .font-heading {
   line-height: 1.4;
   letter-spacing: -0.01em;
-  color: #003366;
+  @apply text-foreground;
+}
+
+/* إصلاح شامل لشريط البحث والحقول في لوحة التحكم */
+.dark .bg-white input,
+.dark .bg-gray-50 input,
+.dark .bg-white select,
+.dark .bg-gray-50 select {
+  background-color: #0a0a0a !important;
+  color: #f3f4f6 !important;
+  border-color: #374151 !important;
+}
+
+/* حل جذري لجميع الحقول في الوضع الليلي */
+.dark input, 
+.dark textarea, 
+.dark select,
+.dark .tiptap,
+.dark [contenteditable] {
+  background-color: #0a0a0a !important; /* أسود عميق */
+  color: #f3f4f6 !important; /* نص فاتح */
+  border-color: #374151 !important; /* حدود رمادية داكنة */
+}
+
+.dark input::placeholder {
+  color: #6b7280 !important;
 }
 
 .prose {
   line-height: 2;
-  color: #374151;
+  max-width: none;
+  @apply text-foreground/90 transition-colors duration-300;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose strong {
+  @apply text-foreground font-black;
+}
+
+.prose a {
+  @apply text-primary hover:text-primary/80 no-underline border-b border-primary/30 transition-colors;
+}
+
+.prose code {
+  @apply bg-muted px-1.5 py-0.5 rounded-md text-primary font-mono text-sm;
 }
 
 .prose h2,
@@ -71,10 +177,15 @@ h4,
   width: 100%;
   max-width: 100%;
   border-radius: 2rem;
-  box-shadow: 0 40px 100px rgba(0, 51, 102, 0.15);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
   object-fit: contain;
-  background-color: #fcfdfe;
-  border: 1px solid #f1f5f9;
+  @apply bg-card border border-border transition-all duration-300;
+}
+
+.dark .prose img {
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+  background-color: transparent;
+  @apply border-primary/10;
 }
 
 /* Custom Utilities */

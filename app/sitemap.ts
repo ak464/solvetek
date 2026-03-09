@@ -36,14 +36,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // 3. Dynamic Articles (with images)
     const { data: articles } = await supabase
         .from('articles')
-        .select('slug, category:categories(slug), updated_at, featured_image')
+        .select('slug, category:categories(slug), updated_at, featured_image, title')
         .eq('is_published', true)
 
     const articleRoutes = articles?.map((article: any) => ({
         url: `${BASE_URL}/guides/${article.category?.slug}/${article.slug}`,
         lastModified: new Date(article.updated_at),
         changeFrequency: 'monthly' as const,
-        priority: 0.9, // Articles are high priority
+        priority: 0.9,
+        images: article.featured_image ? [article.featured_image] : undefined,
     })) ?? []
 
     return [...routes, ...categoryRoutes, ...articleRoutes]

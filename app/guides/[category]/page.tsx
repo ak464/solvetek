@@ -65,28 +65,28 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     return (
         <main className="min-h-screen pb-32">
             {/* 1. COMPACT CATEGORY HEADER */}
-            <div className="bg-white border-b border-gray-100 relative overflow-hidden">
+            <div className="bg-card border-b border-border relative overflow-hidden">
                 <div className="max-w-[1600px] mx-auto px-4 py-10 flex flex-col items-center gap-3 relative z-10">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 text-[10px] font-black tracking-wider uppercase border border-blue-100">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-[10px] font-black tracking-wider uppercase border border-primary/20">
                         <Sparkles size={12} className="animate-pulse" />
                         قسم {dbCategory.name_ar}
                     </div>
 
-                    <h1 className="text-lg md:text-2xl lg:text-3xl font-black text-black text-center font-heading leading-snug tracking-tight max-w-3xl lowercase">
-                        Solve<span className="text-blue-600">Tek</span> - {dbCategory.name_ar}
+                    <h1 className="text-lg md:text-2xl lg:text-3xl font-black text-foreground text-center font-heading leading-snug tracking-tight max-w-3xl lowercase">
+                        Solve<span className="text-primary">Tek</span> - {dbCategory.name_ar}
                     </h1>
 
                     {/* BREADCRUMBS PATH */}
-                    <nav className="flex items-center gap-2 text-xs font-bold text-gray-400 mt-2">
-                        <Link href="/" className="hover:text-blue-600 flex items-center gap-1.5 transition-colors">
+                    <nav className="flex items-center gap-2 text-xs font-bold text-muted-foreground mt-2">
+                        <Link href="/" className="hover:text-primary flex items-center gap-1.5 transition-colors">
                             <Home size={12} /> الرئيسية
                         </Link>
                         <ChevronLeft size={12} />
-                        <span className="text-blue-600">{dbCategory.name_ar}</span>
+                        <span className="text-primary">{dbCategory.name_ar}</span>
                     </nav>
                 </div>
                 {/* Subtle bg glow */}
-                <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-50/50 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
+                <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
             </div>
 
             {/* 2. MAIN LAYOUT (70/30 Grid) */}
@@ -96,9 +96,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                         {/* Main Feed Column (70%) */}
                         <div className="lg:col-span-8">
                             {/* Section Header */}
-                            <div className="bg-white p-5 border-b-4 border-[#003366] mb-8 flex items-center justify-between rounded-t-xl shadow-sm">
-                                <h2 className="text-xl md:text-2xl font-black text-[#003366] font-heading tracking-tighter flex items-center gap-3">
-                                    <span className="bg-[#003366] text-white p-1.5 rounded-lg shadow-md flex items-center justify-center">
+                            <div className="bg-card p-5 border-b-4 border-primary mb-8 flex items-center justify-between rounded-t-xl shadow-sm">
+                                <h2 className="text-xl md:text-2xl font-black text-primary font-heading tracking-tighter flex items-center gap-3">
+                                    <span className="bg-primary text-primary-foreground p-1.5 rounded-lg shadow-md flex items-center justify-center">
                                         <Newspaper size={18} />
                                     </span>
                                     مقالات {dbCategory.name_ar}
@@ -114,17 +114,17 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
                             {/* Vertical List of Articles */}
                             {articles && articles.length > 0 ? (
-                                <div className="bg-white rounded-b-3xl shadow-sm overflow-hidden border border-t-0 border-gray-100 divide-y divide-gray-100 transition-colors">
+                                <div className="bg-card rounded-b-3xl shadow-sm overflow-hidden border border-t-0 border-border divide-y divide-border transition-colors">
                                     {articles.map((article: any) => (
                                         <HorizontalArticleCard key={article.id} article={article} />
                                     ))}
                                 </div>
                             ) : (
-                                <div className="bg-white p-20 rounded-3xl border border-gray-100 text-center flex flex-col items-center gap-4">
-                                    <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-gray-200">
+                                <div className="bg-card p-20 rounded-3xl border border-border text-center flex flex-col items-center gap-4">
+                                    <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center text-muted-foreground">
                                         <Newspaper size={40} />
                                     </div>
-                                    <p className="font-bold text-gray-400">لا توجد مقالات في هذا القسم حالياً.</p>
+                                    <p className="font-bold text-muted-foreground">لا توجد مقالات في هذا القسم حالياً.</p>
                                 </div>
                             )}
                         </div>

@@ -96,21 +96,21 @@ export default function AdminSettingsPage() {
                                 className="w-full h-12 px-4 bg-muted border border-border rounded-xl font-bold text-foreground focus:ring-2 focus:ring-primary outline-none transition-all"
                                 placeholder="مثال: SolveTek"
                             />
-                            <p className="text-xs text-muted-foreground mt-1.5 font-medium leading-relaxed">
+                            <p className="text-xs text-gray-500 mt-1.5 font-medium leading-relaxed">
                                 📍 يظهر في: <span className="text-primary font-black">الـ Header • الـ Footer • داخل الموقع</span>
                             </p>
                         </div>
                         <div className="col-span-2">
-                            <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">اسم الموقع (للبحث والـ SEO)</label>
+                            <label className="block text-sm font-bold text-muted-foreground mb-2">اسم الموقع (للبحث والـ SEO)</label>
                             <input
                                 type="text"
                                 value={formData.site_name}
                                 onChange={e => setFormData({ ...formData, site_name: e.target.value })}
-                                className="w-full h-12 px-4 bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl font-bold text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                className="w-full h-12 px-4 bg-muted border border-border rounded-xl font-bold text-foreground focus:ring-2 focus:ring-primary outline-none transition-all"
                                 placeholder="مثال: SolveTek السعودي - دليل الحلول التقنية"
                             />
                             <p className="text-xs text-gray-500 mt-1.5 font-medium leading-relaxed">
-                                📍 يظهر في: <span className="text-purple-600 font-black">تبويب المتصفح • نتائج البحث (Google) • المشاركات (Twitter, Facebook)</span>
+                                📍 يظهر في: <span className="text-primary font-black">تبويب المتصفح • نتائج البحث (Google) • المشاركات (Twitter, Facebook)</span>
                             </p>
                         </div>
                         <div className="col-span-2 md:col-span-1">

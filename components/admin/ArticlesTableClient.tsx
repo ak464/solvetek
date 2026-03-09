@@ -63,14 +63,14 @@ export function ArticlesTableClient({ articles, categories }: ArticlesTableClien
     return (
         <>
             <table className="w-full text-right">
-                <thead className="bg-gray-50 text-gray-500 text-sm border-b border-gray-200">
+                <thead className="bg-muted/50 text-muted-foreground text-sm border-b border-border">
                     <tr>
                         <th className="px-6 py-4 font-bold w-12">
                             <input
                                 type="checkbox"
                                 checked={selectedIds.length === articles.length && articles.length > 0}
                                 onChange={toggleSelectAll}
-                                className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                className="w-4 h-4 rounded border-input bg-background text-primary focus:ring-primary cursor-pointer accent-primary"
                             />
                         </th>
                         <th className="px-6 py-4 font-bold w-16"></th>
@@ -83,15 +83,15 @@ export function ArticlesTableClient({ articles, categories }: ArticlesTableClien
                         <th className="px-6 py-4 font-bold">الإجراءات</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-border">
                     {articles.map((article) => (
-                        <tr key={article.id} className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(article.id) ? 'bg-blue-50' : ''}`}>
+                        <tr key={article.id} className={`hover:bg-muted/30 transition-colors ${selectedIds.includes(article.id) ? 'bg-primary/5' : ''}`}>
                             <td className="px-6 py-4">
                                 <input
                                     type="checkbox"
                                     checked={selectedIds.includes(article.id)}
                                     onChange={() => toggleSelect(article.id)}
-                                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                    className="w-4 h-4 rounded border-input bg-background text-primary focus:ring-primary cursor-pointer accent-primary"
                                 />
                             </td>
                             <td className="px-6 py-4">
@@ -99,42 +99,42 @@ export function ArticlesTableClient({ articles, categories }: ArticlesTableClien
                                     <img
                                         src={article.featured_image}
                                         alt={article.title}
-                                        className="w-12 h-12 rounded-lg object-cover border border-gray-200"
+                                        className="w-12 h-12 rounded-lg object-cover border border-border"
                                     />
                                 ) : (
-                                    <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center border border-gray-200">
-                                        <span className="text-gray-400 text-xs font-bold">لا صورة</span>
+                                    <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center border border-border">
+                                        <span className="text-muted-foreground text-xs font-bold">لا صورة</span>
                                     </div>
                                 )}
                             </td>
                             <td className="px-6 py-4">
                                 <div className="max-w-xs">
-                                    <p className="font-medium text-gray-900 line-clamp-1">{article.title}</p>
-                                    <p className="text-xs text-gray-400 mt-1">أنشئ {formatDate(article.created_at)}</p>
+                                    <p className="font-medium text-foreground line-clamp-1">{article.title}</p>
+                                    <p className="text-xs text-muted-foreground mt-1">أنشئ {formatDate(article.created_at)}</p>
                                 </div>
                             </td>
-                            <td className="px-6 py-4 text-sm text-blue-600 font-bold">{article.category?.name_ar || '-'}</td>
-                            <td className="px-6 py-4 text-sm text-gray-600 font-medium">{article.author?.username || 'غير معروف'}</td>
+                            <td className="px-6 py-4 text-sm text-primary font-bold">{article.category?.name_ar || '-'}</td>
+                            <td className="px-6 py-4 text-sm text-muted-foreground font-medium">{article.author?.username || 'غير معروف'}</td>
                             <td className="px-6 py-4">
                                 <span className={`px-2 py-1 rounded-full text-xs font-semibold ${article.is_published
-                                    ? "bg-green-100 text-green-700"
-                                    : "bg-yellow-100 text-yellow-700"
+                                    ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
+                                    : "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300"
                                     }`}>
                                     {article.is_published ? "منشور" : "مسودة"}
                                 </span>
                             </td>
-                            <td className="px-6 py-4 text-gray-500 font-bold">{article.views_count || 0}</td>
-                            <td className="px-6 py-4 text-sm text-gray-500">
+                            <td className="px-6 py-4 text-foreground font-bold">{article.views_count || 0}</td>
+                            <td className="px-6 py-4 text-sm text-muted-foreground">
                                 <span title={article.updated_at}>
                                     {formatDate(article.updated_at)}
                                 </span>
                             </td>
                             <td className="px-6 py-4 flex gap-4 text-sm items-center">
-                                <Link href={`/admin/articles/${article.id}`} className="text-blue-600 hover:underline font-bold">تعديل</Link>
+                                <Link href={`/admin/articles/${article.id}`} className="text-primary hover:underline font-bold">تعديل</Link>
                                 {article.category ? (
-                                    <a href={`/guides/${article.category.slug}/${article.slug}`} target="_blank" className="text-gray-400 hover:text-gray-600 font-bold">عرض</a>
+                                    <a href={`/guides/${article.category.slug}/${article.slug}`} target="_blank" className="text-muted-foreground hover:text-foreground font-bold">عرض</a>
                                 ) : (
-                                    <span className="text-gray-300 cursor-not-allowed" title="لا يوجد قسم">عرض</span>
+                                    <span className="text-muted-foreground/50 cursor-not-allowed" title="لا يوجد قسم">عرض</span>
                                 )}
                                 <DeleteArticleButton articleId={article.id} />
                             </td>
@@ -142,7 +142,7 @@ export function ArticlesTableClient({ articles, categories }: ArticlesTableClien
                     ))}
                     {articles.length === 0 && (
                         <tr>
-                            <td colSpan={9} className="px-6 py-12 text-center text-gray-500">
+                            <td colSpan={9} className="px-6 py-12 text-center text-muted-foreground">
                                 لا توجد مقالات تطابق معايير البحث.
                             </td>
                         </tr>

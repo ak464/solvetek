@@ -34,6 +34,10 @@ export type Article = {
     tags: string[] | null;
     ads_enabled: boolean;
     affiliate_enabled: boolean;
+    featured_image: string | null;
+    meta_title: string | null;
+    meta_description: string | null;
+    meta_keywords: string | null;
     created_at: string;
     updated_at: string;
 };

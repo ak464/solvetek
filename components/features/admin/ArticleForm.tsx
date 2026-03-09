@@ -24,6 +24,9 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
         excerpt: initialData?.excerpt || "",
         content: initialData?.content ? (typeof initialData.content === 'string' ? initialData.content : '') : "",
         category_id: initialData?.category_id || "",
+        featured_image: initialData?.featured_image || "",
+        meta_title: initialData?.meta_title || "",
+        meta_description: initialData?.meta_description || "",
         is_published: initialData?.is_published || false,
         ads_enabled: initialData?.ads_enabled ?? true,
         affiliate_enabled: initialData?.affiliate_enabled ?? true,
@@ -61,13 +64,17 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
         if (!formData.title.includes("حل") && !formData.title.includes("طريقة")) suggestions.push("أضف كلمات مثل 'حل مشكلة' أو 'طريقة' لزيادة نسبة النقر.");
         if (!formData.excerpt || formData.excerpt.length < 50) suggestions.push("المقتطف (SEO Description) ضروري لظهورك في جوجل.");
 
+        // Check content for images if featured image is empty
+        const hasContentImage = formData.content.includes('<img');
+        if (!formData.featured_image && !hasContentImage) suggestions.push("لم تقم بإضافة صورة بارزة ولا يوجد صور في المقال.");
+
         // Technical Keyword Suggestions
         const keywords = ["سريع", "مجاني", "تحديث", "شرح", "خطوات", "بسهولة"];
         const missing = keywords.filter(k => !formData.title.includes(k) && !formData.content.includes(k)).slice(0, 3);
         if (missing.length > 0) suggestions.push(`جرب استخدام كلمات تجذب البحث مثل: ${missing.join('، ')}`);
 
         return suggestions;
-    }, [formData.title, formData.content, formData.excerpt]);
+    }, [formData.title, formData.content, formData.excerpt, formData.featured_image]);
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const title = e.target.value;
@@ -76,6 +83,19 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
             title,
             slug: !isEditing ? title.trim().toLowerCase().replace(/[^\w\u0600-\u06FF\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '') : prev.slug
         }));
+    };
+
+    const extractFirstImageFromContent = (htmlContent: string): string | null => {
+        if (typeof window === 'undefined') return null;
+        try {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlContent, 'text/html');
+            const img = doc.querySelector('img');
+            return img ? img.getAttribute('src') : null;
+        } catch (e) {
+            console.error("Error extracting image", e);
+            return null;
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -90,12 +110,24 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
             return;
         }
 
+        // Auto-detect featured image if empty
+        let finalFeaturedImage = formData.featured_image;
+        if (!finalFeaturedImage) {
+            const extractedImage = extractFirstImageFromContent(formData.content);
+            if (extractedImage) {
+                finalFeaturedImage = extractedImage;
+            }
+        }
+
         const payload = {
             title: formData.title,
             slug: formData.slug,
             excerpt: formData.excerpt,
             content: formData.content,
             category_id: Number(formData.category_id),
+            featured_image: finalFeaturedImage,
+            meta_title: formData.meta_title,
+            meta_description: formData.meta_description,
             author_id: user.id,
             is_published: formData.is_published,
             ads_enabled: formData.ads_enabled,
@@ -138,17 +170,17 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
         <div className="flex flex-col lg:flex-row gap-8 max-w-[1440px] mx-auto p-4 lg:p-8">
             {/* Main Editing Area */}
             <div className="flex-1 space-y-6">
-                <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col gap-6">
+                <div className="bg-white dark:bg-[#111827] p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col gap-6 transition-colors">
                     <input
                         type="text"
                         placeholder="عنوان المقال هنا..."
                         required
                         value={formData.title}
                         onChange={handleTitleChange}
-                        className="text-3xl md:text-4xl font-black text-gray-900 border-none outline-none focus:ring-0 placeholder:text-gray-200 w-full font-heading"
+                        className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white border-none outline-none focus:ring-0 placeholder:text-gray-200 dark:placeholder:text-gray-700 w-full font-heading bg-transparent"
                     />
 
-                    <div className="flex items-center gap-2 text-sm text-gray-400 bg-gray-50 p-2 rounded-lg">
+                    <div className="flex items-center gap-2 text-sm text-gray-400 bg-gray-50 dark:bg-[#0a0a0a] p-2 rounded-lg transition-colors">
                         <span className="font-bold">رابط المقال:</span>
                         <span className="font-mono" dir="ltr">/guides/[category]/</span>
                         <input
@@ -158,45 +190,92 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
                         />
                     </div>
 
+                    {/* Featured Image Input */}
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-700 dark:text-gray-300">الصورة البارزة</label>
+                        <div className="flex gap-4 items-start">
+                            <input
+                                type="text"
+                                placeholder="رابط الصورة (URL) - سيتم استخدام أول صورة في المقال تلقائياً إذا ترك فارغاً"
+                                value={formData.featured_image || ""}
+                                onChange={(e) => setFormData({ ...formData, featured_image: e.target.value })}
+                                className="flex-1 p-3 rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#0a0a0a] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
+                            />
+                            {formData.featured_image && (
+                                <div className="w-20 h-20 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 shrink-0">
+                                    <img src={formData.featured_image} alt="Preview" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
                     <TipTapEditor
                         content={formData.content}
                         onChange={(html) => setFormData({ ...formData, content: html })}
                     />
                 </div>
 
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-gray-800">
+                <div className="bg-white dark:bg-[#111827] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 transition-colors">
+                    <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-gray-800 dark:text-white">
                         <Eye size={20} className="text-blue-500" />
-                        مقتطف SEO (الوصف المختصر)
+                        تحسين محركات البحث (SEO)
                     </h3>
-                    <textarea
-                        rows={3}
-                        placeholder="اكتب مخلصاً للمقال يظهر في نتائج بحث جوجل وشبكات التواصل..."
-                        value={formData.excerpt || ""}
-                        onChange={e => setFormData({ ...formData, excerpt: e.target.value })}
-                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
 
-                    <div className="mt-6 border-t border-gray-50 pt-6">
-                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-gray-800">
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">عنوان الميتا (Meta Title)</label>
+                            <input
+                                type="text"
+                                placeholder="اتركه فارغاً لاستخدام عنوان المقال"
+                                value={formData.meta_title || ""}
+                                onChange={e => setFormData({ ...formData, meta_title: e.target.value })}
+                                className="w-full p-3 rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#0a0a0a] text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">وصف الميتا (Meta Description)</label>
+                            <textarea
+                                rows={3}
+                                placeholder="وصف يظهر في محركات البحث (يفضل أن يكون أقل من 160 حرف)"
+                                value={formData.meta_description || ""}
+                                onChange={e => setFormData({ ...formData, meta_description: e.target.value })}
+                                className="w-full p-3 bg-gray-50 dark:bg-[#0a0a0a] border border-gray-100 dark:border-gray-800 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
+                            />
+                        </div>
+
+                        <div className="pt-4 border-t border-gray-100 dark:border-gray-800 mt-4">
+                            <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">المقتطف (Excerpt) للعرض في الموقع</label>
+                            <textarea
+                                rows={3}
+                                placeholder="اكتب مخلصاً للمقال يظهر في قوائم الموقع..."
+                                value={formData.excerpt || ""}
+                                onChange={e => setFormData({ ...formData, excerpt: e.target.value })}
+                                className="w-full p-3 bg-gray-50 dark:bg-[#0a0a0a] border border-gray-100 dark:border-gray-800 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="mt-6 border-t border-gray-50 dark:border-gray-800 pt-6">
+                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-gray-800 dark:text-white">
                             <Sparkles size={20} className="text-blue-500" />
-                            الكلمات الدلالية (Tags)
+                            الوسوم (Tags)
                         </h3>
                         <input
                             type="text"
-                            placeholder="كلمات مفتاحية مفصولة بفواصل (مثال: تقنية, شروحات, ايفون)"
+                            placeholder="كلمات مفتاحية لتصنيف المقال داخل الموقع (مثال: تقنية, شروحات)"
                             value={formData.tags}
                             onChange={e => setFormData({ ...formData, tags: e.target.value })}
-                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+                            className="w-full p-4 bg-gray-50 dark:bg-[#0a0a0a] border border-gray-100 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
                         />
                         <p className="text-xs text-gray-400 mt-2">افصل بين الكلمات بفاصلة (،)</p>
                     </div>
                 </div>
 
                 {/* Monetization Section */}
-                <div className="bg-white p-8 rounded-2xl shadow-sm border border-orange-100 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-orange-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                    <h3 className="text-xl font-black mb-8 flex items-center gap-3 text-[#003366] relative z-10">
+                <div className="bg-white dark:bg-[#111827] p-8 rounded-2xl shadow-sm border border-orange-100 dark:border-orange-900/30 relative overflow-hidden transition-colors">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-orange-50 dark:bg-orange-900/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                    <h3 className="text-xl font-black mb-8 flex items-center gap-3 text-[#003366] dark:text-white relative z-10">
                         <DollarSign size={24} className="text-orange-500" />
                         إعدادات الربح (Monetization)
                     </h3>
@@ -204,10 +283,10 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 relative z-10">
                         <div
                             onClick={() => setFormData({ ...formData, ads_enabled: !formData.ads_enabled })}
-                            className={`p-6 rounded-2xl border-2 cursor-pointer transition-all ${formData.ads_enabled ? 'border-blue-600 bg-blue-50/30' : 'border-gray-50 bg-gray-50/30'}`}
+                            className={`p-6 rounded-2xl border-2 cursor-pointer transition-all ${formData.ads_enabled ? 'border-blue-600 bg-blue-50/30 dark:bg-blue-900/10' : 'border-gray-50 dark:border-gray-800 bg-gray-50/30 dark:bg-gray-800/10'}`}
                         >
                             <div className="flex items-center justify-between">
-                                <span className="font-black text-[#003366]">إعلانات AdSense</span>
+                                <span className="font-black text-[#003366] dark:text-blue-100">إعلانات AdSense</span>
                                 <div className={`w-10 h-5 rounded-full relative transition-colors ${formData.ads_enabled ? 'bg-blue-600' : 'bg-gray-300'}`}>
                                     <div className={`w-3 h-3 bg-white rounded-full absolute top-1 transition-all ${formData.ads_enabled ? 'right-6' : 'right-1'}`} />
                                 </div>
@@ -217,10 +296,10 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
 
                         <div
                             onClick={() => setFormData({ ...formData, affiliate_enabled: !formData.affiliate_enabled })}
-                            className={`p-6 rounded-2xl border-2 cursor-pointer transition-all ${formData.affiliate_enabled ? 'border-orange-500 bg-orange-50/30' : 'border-gray-50 bg-gray-50/30'}`}
+                            className={`p-6 rounded-2xl border-2 cursor-pointer transition-all ${formData.affiliate_enabled ? 'border-orange-500 bg-orange-50/30 dark:bg-orange-900/10' : 'border-gray-50 dark:border-gray-800 bg-gray-50/30 dark:bg-gray-800/10'}`}
                         >
                             <div className="flex items-center justify-between">
-                                <span className="font-black text-[#003366]">روابط الأفلييت</span>
+                                <span className="font-black text-[#003366] dark:text-orange-100">روابط الأفلييت</span>
                                 <div className={`w-10 h-5 rounded-full relative transition-colors ${formData.affiliate_enabled ? 'bg-orange-500' : 'bg-gray-300'}`}>
                                     <div className={`w-3 h-3 bg-white rounded-full absolute top-1 transition-all ${formData.affiliate_enabled ? 'right-6' : 'right-1'}`} />
                                 </div>
@@ -230,9 +309,9 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
                     </div>
 
                     {formData.affiliate_enabled && (
-                        <div className="space-y-6 relative z-10">
-                            <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                                <h4 className="text-sm font-black text-[#003366]">روابط الأفلييت المختارة لهذا المقال</h4>
+                        <div className="space-y-6 relative z-10 transition-colors">
+                            <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-4">
+                                <h4 className="text-sm font-black text-[#003366] dark:text-gray-300">روابط الأفلييت المختارة لهذا المقال</h4>
                                 <button
                                     type="button"
                                     onClick={() => setMonetizationSettings([...monetizationSettings, { position: 'bottom', block_type: 'box', is_enabled: true }])}
@@ -245,7 +324,7 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
 
                             <div className="space-y-4">
                                 {monetizationSettings.map((setting, idx) => (
-                                    <div key={idx} className="bg-gray-50 border border-gray-100 p-4 rounded-2xl flex flex-wrap md:flex-nowrap items-center gap-4 group">
+                                    <div key={idx} className="bg-gray-50 dark:bg-[#0a0a0a] border border-gray-100 dark:border-gray-800 p-4 rounded-2xl flex flex-wrap md:flex-nowrap items-center gap-4 group transition-colors">
                                         <div className="flex-1 min-w-[200px]">
                                             <select
                                                 value={setting.affiliate_link_id || ""}
@@ -254,7 +333,7 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
                                                     newSettings[idx].affiliate_link_id = Number(e.target.value);
                                                     setMonetizationSettings(newSettings);
                                                 }}
-                                                className="w-full bg-white border border-gray-100 h-10 rounded-xl px-3 text-xs font-bold outline-none ring-blue-500 focus:ring-2"
+                                                className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-gray-700 text-gray-900 dark:text-white h-10 rounded-xl px-3 text-xs font-bold outline-none ring-blue-500 focus:ring-2 transition-colors"
                                             >
                                                 <option value="">اختر رابط أفلييت...</option>
                                                 {affiliateLinks.map(link => (
@@ -272,7 +351,7 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
                                                     newSettings[idx].position = e.target.value as any;
                                                     setMonetizationSettings(newSettings);
                                                 }}
-                                                className="w-full bg-white border border-gray-100 h-10 rounded-xl px-3 text-xs font-bold outline-none"
+                                                className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-gray-700 text-gray-900 dark:text-white h-10 rounded-xl px-3 text-xs font-bold outline-none transition-colors"
                                             >
                                                 <option value="top">البداية</option>
                                                 <option value="middle">المنتصف</option>
@@ -288,7 +367,7 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
                                                     newSettings[idx].block_type = e.target.value as any;
                                                     setMonetizationSettings(newSettings);
                                                 }}
-                                                className="w-full bg-white border border-gray-100 h-10 rounded-xl px-3 text-xs font-bold outline-none"
+                                                className="w-full bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-gray-700 text-gray-900 dark:text-white h-10 rounded-xl px-3 text-xs font-bold outline-none transition-colors"
                                             >
                                                 <option value="box">صندوق (Box)</option>
                                                 <option value="button">زر (CTA)</option>
@@ -298,14 +377,14 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
                                         <button
                                             type="button"
                                             onClick={() => setMonetizationSettings(monetizationSettings.filter((_, i) => i !== idx))}
-                                            className="p-2 text-red-400 bg-white border border-gray-100 rounded-xl hover:bg-red-50 hover:text-red-500 transition-all opacity-0 group-hover:opacity-100"
+                                            className="p-2 text-red-400 bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-gray-700 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500 transition-all opacity-0 group-hover:opacity-100"
                                         >
                                             <Trash2 size={16} />
                                         </button>
                                     </div>
                                 ))}
                                 {monetizationSettings.length === 0 && (
-                                    <div className="text-center py-8 text-gray-400 text-xs font-bold bg-gray-50/50 border-2 border-dashed border-gray-100 rounded-3xl">
+                                    <div className="text-center py-8 text-gray-400 text-xs font-bold bg-gray-50/50 dark:bg-gray-900/20 border-2 border-dashed border-gray-100 dark:border-gray-800 rounded-3xl">
                                         لم تقم بإضافة أي روابط أفلييت لهذا المقال بعد.
                                     </div>
                                 )}
@@ -319,20 +398,20 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
             {/* Sidebar Tools */}
             <div className="w-full lg:w-80 space-y-6">
                 {/* Publish Settings */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
+                <div className="bg-white dark:bg-[#111827] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 transition-colors">
+                    <h3 className="text-lg font-bold mb-6 flex items-center gap-2 dark:text-white">
                         <Settings size={20} className="text-gray-500" />
                         إعدادات النشر
                     </h3>
 
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-bold text-gray-700 mb-2">القسم</label>
+                            <label className="block text-sm font-bold text-gray-700 dark:text-gray-400 mb-2">القسم</label>
                             <select
                                 required
                                 value={formData.category_id}
                                 onChange={e => setFormData({ ...formData, category_id: e.target.value })}
-                                className="w-full h-11 px-3 bg-gray-50 border border-gray-100 rounded-xl font-bold text-gray-700 outline-none"
+                                className="w-full h-11 px-3 bg-gray-50 dark:bg-[#0a0a0a] border border-gray-100 dark:border-gray-700 rounded-xl font-bold text-gray-700 dark:text-white outline-none transition-colors"
                             >
                                 <option value="">اختر القسم...</option>
                                 {categories.map(cat => (
@@ -341,11 +420,11 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
                             </select>
                         </div>
 
-                        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100 cursor-pointer" onClick={() => setFormData({ ...formData, is_published: !formData.is_published })}>
+                        <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-[#0a0a0a] rounded-xl border border-gray-100 dark:border-gray-700 cursor-pointer transition-colors" onClick={() => setFormData({ ...formData, is_published: !formData.is_published })}>
                             <div className={`w-12 h-6 rounded-full transition-colors relative ${formData.is_published ? 'bg-green-500' : 'bg-gray-300'}`}>
                                 <div className={`w-4 h-4 bg-white rounded-full absolute top-1 transition-all ${formData.is_published ? 'right-7' : 'right-1'}`} />
                             </div>
-                            <span className="text-sm font-bold text-gray-700">منشور للعامة</span>
+                            <span className="text-sm font-bold text-gray-700 dark:text-gray-300">منشور للعامة</span>
                         </div>
                     </div>
 
@@ -359,15 +438,15 @@ export function ArticleForm({ initialData, isEditing = false }: ArticleFormProps
                 </div>
 
                 {/* SEO Helper */}
-                <div className="bg-gradient-to-br from-purple-50 to-indigo-50 p-6 rounded-2xl border border-purple-100">
-                    <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-purple-800">
+                <div className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 p-6 rounded-2xl border border-purple-100 dark:border-purple-900/30 transition-colors">
+                    <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-purple-800 dark:text-purple-300">
                         <Sparkles size={20} />
                         مساعد SEO الذكي
                     </h3>
 
                     <div className="space-y-3">
                         {seoSuggestions.map((s, i) => (
-                            <div key={i} className="flex gap-2 text-sm text-purple-700 leading-snug">
+                            <div key={i} className="flex gap-2 text-sm text-purple-700 dark:text-purple-400 leading-snug">
                                 <AlertCircle size={16} className="shrink-0 mt-0.5" />
                                 <p>{s}</p>
                             </div>

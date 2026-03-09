@@ -4,10 +4,11 @@ export const metadata = {
 
 export default function PrivacyPage() {
     return (
-        <div className="max-w-4xl mx-auto px-4 py-16">
-            <h1 className="text-4xl font-bold text-gray-900 mb-8 font-heading">سياسة الخصوصية</h1>
+        <div className="max-w-4xl mx-auto py-12 px-4">
+            <div className="bg-card p-8 md:p-12 rounded-[2.5rem] border border-border shadow-sm">
+                <h1 className="text-4xl font-black mb-8 text-foreground">سياسة الخصوصية</h1>
 
-            <div className="prose prose-lg prose-blue text-gray-700 leading-loose">
+                <div className="prose prose-lg dark:prose-invert leading-loose">
                 <p>تاريخ آخر تحديث: 26 يناير 2026</p>
 
                 <p>
@@ -34,6 +35,7 @@ export default function PrivacyPage() {
                 <p>
                     إذا كان لديك أي أسئلة حول سياسة الخصوصية، لا تتردد في الاتصال بنا عبر صفحة اتصل بنا.
                 </p>
+                </div>
             </div>
         </div>
     );

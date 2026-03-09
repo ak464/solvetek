@@ -18,13 +18,13 @@ export function HorizontalArticleCard({ article, className }: HorizontalArticleC
 
     return (
         <div className={cn(
-            "group flex flex-row gap-4 sm:gap-6 md:gap-8 p-4 md:p-6 bg-white border-b border-gray-100 last:border-0 hover:border-transparent hover:shadow-2xl hover:shadow-[#003366]/10 hover:rounded-2xl transition-all duration-300 relative hover:z-10",
+            "group flex flex-row gap-4 sm:gap-6 md:gap-8 p-4 md:p-6 bg-card border-b border-border last:border-0 hover:border-transparent hover:shadow-2xl hover:shadow-primary/10 hover:rounded-2xl transition-all duration-300 relative hover:z-10",
             className
         )}>
             {/* Thumbnail - Sharp Almuhtarif Style */}
             <Link
                 href={link}
-                className="w-[100px] h-[70px] sm:w-[220px] sm:h-[130px] md:w-[280px] md:h-[160px] bg-gray-50 rounded-lg flex-shrink-0 style-image-container overflow-hidden relative shadow-sm border border-gray-100 block"
+                className="w-[100px] h-[70px] sm:w-[220px] sm:h-[130px] md:w-[280px] md:h-[160px] bg-muted rounded-lg flex-shrink-0 style-image-container overflow-hidden relative shadow-sm border border-border block"
             >
                 {coverImage ? (
                     <img
@@ -33,7 +33,7 @@ export function HorizontalArticleCard({ article, className }: HorizontalArticleC
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                 ) : (
-                    <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center text-5xl opacity-40 group-hover:scale-110 transition-transform duration-700">
+                    <div className="absolute inset-0 bg-muted flex items-center justify-center text-5xl opacity-40 group-hover:scale-110 transition-transform duration-700">
                         📁
                     </div>
                 )}
@@ -41,11 +41,11 @@ export function HorizontalArticleCard({ article, className }: HorizontalArticleC
 
             <div className="flex-1 min-w-0 pr-2 flex flex-col justify-between py-0.5">
                 <Link href={link} className="block group/title">
-                    <h3 className="text-sm sm:text-lg md:text-xl font-black text-[#003366] group-hover/title:text-blue-600 transition-colors mb-2 font-heading leading-tight tracking-tight line-clamp-2 md:line-clamp-none">
+                    <h3 className="text-sm sm:text-lg md:text-xl font-black text-primary group-hover/title:opacity-80 transition-colors mb-2 font-heading leading-tight tracking-tight line-clamp-2 md:line-clamp-none">
                         {article.title}
                     </h3>
 
-                    <p className="text-gray-500 text-sm md:text-base leading-relaxed line-clamp-2 font-medium mb-4 max-w-3xl">
+                    <p className="text-muted-foreground text-sm md:text-base leading-relaxed line-clamp-2 font-medium mb-4 max-w-3xl">
                         {extractTextFromHtml(contentHtml, 15)}
                     </p>
                 </Link>
@@ -54,16 +54,16 @@ export function HorizontalArticleCard({ article, className }: HorizontalArticleC
                     <div className="flex items-center gap-6">
                         <Link
                             href={link}
-                            className="flex items-center gap-1 text-[#003366] font-bold text-[11px] hover:text-blue-600 transition-colors group/more"
+                            className="flex items-center gap-1 text-primary font-bold text-[11px] hover:opacity-80 transition-colors group/more"
                         >
                             قراءة المزيد
                             <ChevronLeft size={14} className="mt-0.5 transition-transform group-hover/more:-translate-x-1" />
                         </Link>
 
-                        <div className="w-px h-4 bg-gray-200 hidden sm:block" />
+                        <div className="w-px h-4 bg-border hidden sm:block" />
 
-                        <div className="flex items-center gap-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest hidden sm:flex">
-                            <span className="flex items-center gap-2"><Calendar size={13} className="text-gray-300" /> {new Date(article.created_at || "").toLocaleDateString("ar-SA")}</span>
+                        <div className="flex items-center gap-4 text-[11px] font-bold text-muted-foreground uppercase tracking-widest hidden sm:flex">
+                            <span className="flex items-center gap-2"><Calendar size={13} className="text-muted-foreground/50" /> {new Date(article.created_at || "").toLocaleDateString("ar-SA")}</span>
                         </div>
                     </div>
 

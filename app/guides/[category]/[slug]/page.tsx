@@ -10,6 +10,7 @@ import { Clock, Sparkles, ChevronLeft, Star } from "lucide-react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { ShareWidget } from "@/components/ui/ShareWidget";
 import { MonetizationRenderer } from "@/components/features/monetization/MonetizationRenderer";
+import { CommentsSection } from "@/components/comments/CommentsSection";
 
 interface ArticlePageProps {
     params: Promise<{
@@ -25,13 +26,27 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     const supabase = await createClient();
     const { data: article } = await supabase
         .from("articles")
-        .select("title, excerpt, featured_image")
+        .select("title, excerpt, featured_image, content")
         .eq("slug", decodedSlug)
         .single();
 
     if (!article) return { title: "المقال غير موجود" };
 
-    const ogImage = article.featured_image || 'https://solvetek.net/og-default.png';
+    let ogImage = article.featured_image;
+
+    // Fallback: Extract from content if not set
+    if (!ogImage && article.content) {
+        const contentStr = typeof article.content === 'string' ? article.content : JSON.stringify(article.content);
+        // Simple regex to find src of first img tag
+        const match = contentStr.match(/<img[^>]+src="([^">]+)"/);
+        if (match) {
+            ogImage = match[1];
+        }
+    }
+
+    if (!ogImage) {
+        ogImage = 'https://solvetek.net/og-default.png';
+    }
 
     return {
         title: article.title,
@@ -127,21 +142,21 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <ViewTracker articleId={article.id} />
 
             {/* 1. ARTICLE HERO (Compact) */}
-            <div className="bg-white border-b border-gray-100 relative overflow-hidden pt-8 pb-10">
+            <div className="bg-background border-b border-border relative overflow-hidden pt-8 pb-10">
                 <div className="max-w-[1600px] mx-auto px-4 lg:px-12 relative z-10">
                     {/* Top Meta Bar */}
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-gray-50 pb-4">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-border pb-4">
                         {/* Breadcrumbs */}
-                        <nav className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                            <Link href="/" className="hover:text-blue-600 transition-colors">الرئيسية</Link>
-                            <ChevronLeft size={10} className="text-gray-300" />
-                            <Link href={`/guides/${article.category?.slug}`} className="hover:text-blue-600 transition-colors">{article.category?.name_ar}</Link>
-                            <ChevronLeft size={10} className="text-gray-300" />
-                            <span className="text-blue-600 line-clamp-1 max-w-[150px]">{article.title}</span>
+                        <nav className="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+                            <Link href="/" className="hover:text-primary transition-colors">الرئيسية</Link>
+                            <ChevronLeft size={10} className="text-muted-foreground/50" />
+                            <Link href={`/guides/${article.category?.slug}`} className="hover:text-primary transition-colors">{article.category?.name_ar}</Link>
+                            <ChevronLeft size={10} className="text-muted-foreground/50" />
+                            <span className="text-primary line-clamp-1 max-w-[150px]">{article.title}</span>
                         </nav>
 
                         {/* Category Badge */}
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#003366] text-white text-[10px] font-black tracking-tighter shadow-lg shadow-blue-900/20">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary text-primary-foreground text-[10px] font-black tracking-tighter shadow-lg shadow-primary/20">
                             <Sparkles size={10} />
                             {article.category?.name_ar}
                         </div>
@@ -149,7 +164,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
                     {/* Title Section */}
                     <div className="max-w-4xl text-right">
-                        <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-black leading-[1.2] font-heading tracking-tighter mb-6">
+                        <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-foreground leading-[1.2] font-heading tracking-tighter mb-6">
                             {article.title}
                         </h1>
 
@@ -157,28 +172,28 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                         <div className="flex flex-col sm:flex-row sm:items-center gap-8 py-2">
                             {/* Author Info */}
                             <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-[#003366] font-black text-sm shadow-sm ring-4 ring-white">
+                                <div className="w-10 h-10 rounded-full bg-muted border border-border flex items-center justify-center text-primary font-black text-sm shadow-sm ring-4 ring-background">
                                     {article.author?.username?.[0] || 'S'}
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-[13px] font-black text-black leading-none mb-1">{article.author?.username || 'سولفتيك'}</p>
-                                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                                    <p className="text-[13px] font-black text-foreground leading-none mb-1">{article.author?.username || 'سولفتيك'}</p>
+                                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
                                         {new Date(article.updated_at || article.created_at).toLocaleDateString("ar-SA", { day: 'numeric', month: 'long', year: 'numeric' })}
                                     </p>
                                 </div>
                             </div>
 
-                            <div className="hidden sm:block w-px h-6 bg-gray-100" />
+                            <div className="hidden sm:block w-px h-6 bg-border" />
 
                             {/* Engagement */}
                             <div className="flex items-center gap-6">
                                 <div className="flex items-center gap-2 group/meta">
-                                    <Clock size={16} className="text-gray-300 group-hover/meta:text-blue-600 transition-colors" />
-                                    <span className="text-[11px] font-black text-gray-400 group-hover/meta:text-black transition-colors">{Math.ceil((content.length || 0) / 1000) || 5} دقائق قراءة</span>
+                                    <Clock size={16} className="text-muted-foreground group-hover/meta:text-primary transition-colors" />
+                                    <span className="text-[11px] font-black text-muted-foreground group-hover/meta:text-foreground transition-colors">{Math.ceil((content.length || 0) / 1000) || 5} دقائق قراءة</span>
                                 </div>
-                                <div className="w-px h-6 bg-gray-100" />
+                                <div className="w-px h-6 bg-border" />
                                 <div className="flex items-center gap-4">
-                                    <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">مشاركة</span>
+                                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">مشاركة</span>
                                     <ShareWidget title={article.title} variant="compact" />
                                 </div>
                             </div>
@@ -186,7 +201,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                     </div>
                 </div>
                 {/* Modern bg element */}
-                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-br from-blue-50/40 to-white rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 opacity-70" />
+                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-br from-primary/5 to-background rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 opacity-70" />
             </div>
 
             {/* 2. MAIN CONTENT AREA (70/30) */}
@@ -195,9 +210,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
                         {/* Article Text Content (70%) */}
                         <div className="lg:col-span-8">
-                            <div className="bg-white rounded-[2rem] p-8 md:p-12 border border-gray-100 shadow-xl shadow-blue-900/5">
+                            <div className="bg-card rounded-[2rem] p-8 md:p-12 border border-border shadow-xl shadow-primary/5">
                                 {article.excerpt && (
-                                    <p className="text-xl md:text-2xl text-gray-500 leading-relaxed font-medium mb-12 border-r-[8px] border-blue-600/10 pr-8">
+                                    <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed font-medium mb-12 border-r-[8px] border-primary/20 pr-8">
                                         {article.excerpt}
                                     </p>
                                 )}
@@ -205,7 +220,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                                 {/* Top Affiliate / Ad Positioning */}
                                 <MonetizationRenderer settings={article.monetization} position="top" />
 
-                                <div className="max-w-none prose prose-xl prose-blue font-sans text-gray-800 leading-[2.2] text-justify selection:bg-blue-100">
+                                <div className="max-w-none prose prose-xl prose-blue dark:prose-invert font-sans text-foreground leading-[2.2] text-justify selection:bg-primary/20">
                                     <div dangerouslySetInnerHTML={{ __html: content }} />
                                 </div>
 
@@ -217,18 +232,23 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
 
                                 {/* Tags */}
-                                <div className="mt-16 pt-12 border-t border-gray-100 flex flex-wrap gap-3">
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-3">العلامات:</span>
+                                <div className="mt-16 pt-12 border-t border-border flex flex-wrap gap-3">
+                                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-3">العلامات:</span>
                                     {(article.tags && article.tags.length > 0) ? (
                                         article.tags.map((tag: string) => (
-                                            <span key={tag} className="px-4 py-1.5 bg-gray-50 text-gray-500 rounded-full text-[11px] font-bold hover:bg-[#003366] hover:text-white transition-all cursor-pointer">#{tag}</span>
+                                            <span key={tag} className="px-4 py-1.5 bg-muted text-muted-foreground rounded-full text-[11px] font-bold hover:bg-primary hover:text-primary-foreground transition-all cursor-pointer">#{tag}</span>
                                         ))
                                     ) : (
-                                        <span className="text-xs text-gray-300">لا توجد علامات</span>
+                                        <span className="text-xs text-muted-foreground">لا توجد علامات</span>
                                     )}
                                 </div>
-
                             </div>
+
+                            {/* Comments Section */}
+                            <CommentsSection
+                                articleId={article.id}
+                                isLocked={article.comments_locked || false}
+                            />
 
                             {/* Related Articles Component */}
                             <div className="mt-16">
