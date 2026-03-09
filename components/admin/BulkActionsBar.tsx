@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Trash2, Eye, EyeOff, FolderInput, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 type BulkActionsBarProps = {
     selectedCount: number;
@@ -31,14 +32,14 @@ export function BulkActionsBar({ selectedCount, onClearSelection, selectedIds, c
             });
 
             if (res.ok) {
-                alert(`تم نشر ${selectedCount} مقال بنجاح!`);
+                toast.success(`تم نشر ${selectedCount} مقال بنجاح!`);
                 router.refresh();
                 onClearSelection();
             } else {
-                alert('حدث خطأ أثناء النشر');
+                toast.error('حدث خطأ أثناء النشر');
             }
         } catch (error) {
-            alert('حدث خطأ أثناء النشر');
+            toast.error('حدث خطأ أثناء النشر');
         } finally {
             setIsLoading(false);
         }
@@ -56,14 +57,14 @@ export function BulkActionsBar({ selectedCount, onClearSelection, selectedIds, c
             });
 
             if (res.ok) {
-                alert(`تم إلغاء نشر ${selectedCount} مقال بنجاح!`);
+                toast.success(`تم إلغاء نشر ${selectedCount} مقال بنجاح!`);
                 router.refresh();
                 onClearSelection();
             } else {
-                alert('حدث خطأ أثناء إلغاء النشر');
+                toast.error('حدث خطأ أثناء إلغاء النشر');
             }
         } catch (error) {
-            alert('حدث خطأ أثناء إلغاء النشر');
+            toast.error('حدث خطأ أثناء إلغاء النشر');
         } finally {
             setIsLoading(false);
         }
@@ -81,14 +82,14 @@ export function BulkActionsBar({ selectedCount, onClearSelection, selectedIds, c
             });
 
             if (res.ok) {
-                alert(`تم حذف ${selectedCount} مقال بنجاح!`);
+                toast.success(`تم حذف ${selectedCount} مقال بنجاح!`);
                 router.refresh();
                 onClearSelection();
             } else {
-                alert('حدث خطأ أثناء الحذف');
+                toast.error('حدث خطأ أثناء الحذف');
             }
         } catch (error) {
-            alert('حدث خطأ أثناء الحذف');
+            toast.error('حدث خطأ أثناء الحذف');
         } finally {
             setIsLoading(false);
         }
@@ -96,7 +97,7 @@ export function BulkActionsBar({ selectedCount, onClearSelection, selectedIds, c
 
     const handleBulkChangeCategory = async () => {
         if (!selectedCategory) {
-            alert('الرجاء اختيار قسم');
+            toast.error('الرجاء اختيار قسم');
             return;
         }
 
@@ -109,15 +110,15 @@ export function BulkActionsBar({ selectedCount, onClearSelection, selectedIds, c
             });
 
             if (res.ok) {
-                alert(`تم نقل ${selectedCount} مقال إلى القسم الجديد!`);
+                toast.success(`تم نقل ${selectedCount} مقال إلى القسم الجديد!`);
                 router.refresh();
                 onClearSelection();
                 setShowCategoryModal(false);
             } else {
-                alert('حدث خطأ أثناء نقل المقالات');
+                toast.error('حدث خطأ أثناء نقل المقالات');
             }
         } catch (error) {
-            alert('حدث خطأ أثناء نقل المقالات');
+            toast.error('حدث خطأ أثناء نقل المقالات');
         } finally {
             setIsLoading(false);
         }

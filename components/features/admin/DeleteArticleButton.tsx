@@ -4,6 +4,7 @@ import { Trash2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export function DeleteArticleButton({ articleId }: { articleId: number }) {
     const router = useRouter();
@@ -22,9 +23,10 @@ export function DeleteArticleButton({ articleId }: { articleId: number }) {
 
         if (error) {
             console.error("Delete error:", error);
-            alert("فشل الحذف: " + error.message);
+            toast.error("فشل الحذف: " + error.message);
         } else {
             console.log("Delete success, refreshing...");
+            toast.success("تم حذف المقال بنجاح!");
             router.refresh();
             // Force reload if refresh doesn't update the list immediately due to caching
             setTimeout(() => window.location.reload(), 500);

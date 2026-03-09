@@ -31,6 +31,7 @@ import { MaintenanceGuard } from "@/components/site/MaintenanceGuard";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { generateOrganizationSchema, generateWebsiteSchema } from "@/lib/seo/schema";
+import { Toaster } from "sonner";
 
 export async function generateMetadata() {
   const supabase = await createClient();
@@ -126,31 +127,32 @@ export default async function RootLayout({
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <body className={`${tajawal.variable} font-sans antialiased flex flex-col min-h-screen bg-background text-foreground transition-colors duration-300`}>
-        {adClient && (
-          <Script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adClient}`}
-            crossOrigin="anonymous"
-            strategy="lazyOnload"
-          />
-        )}
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true} storageKey="solvetek-theme">
-          <AdsProvider settings={adSettings}>
-            <MaintenanceGuard>
-              <GoogleAnalytics />
-              <JsonLd data={generateOrganizationSchema()} />
-              <JsonLd data={generateWebsiteSchema()} />
-              <PresenceTracker />
-              <AnalyticsTracker />
-              <Header categories={categories || []} siteName={siteName} />
-              <main className="flex-1">
-                {children}
-              </main>
-              <Footer categories={categories || []} siteName={siteName} />
-            </MaintenanceGuard>
-          </AdsProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+          {adClient && (
+            <Script
+              async
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adClient}`}
+              crossOrigin="anonymous"
+              strategy="lazyOnload"
+            />
+          )}
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true} storageKey="solvetek-theme">
+            <AdsProvider settings={adSettings}>
+              <MaintenanceGuard>
+                <GoogleAnalytics />
+                <JsonLd data={generateOrganizationSchema()} />
+                <JsonLd data={generateWebsiteSchema()} />
+                <PresenceTracker />
+                <AnalyticsTracker />
+                <Header categories={categories || []} siteName={siteName} />
+                <main className="flex-1">
+                  {children}
+                </main>
+                <Footer categories={categories || []} siteName={siteName} />
+              </MaintenanceGuard>
+            </AdsProvider>
+          </ThemeProvider>
+          <Toaster richColors position="top-center" theme="system" dir="rtl" />
+        </body>
+      </html>
   );
 }

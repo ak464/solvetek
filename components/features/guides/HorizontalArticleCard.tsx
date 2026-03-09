@@ -1,9 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Article } from "@/lib/types/database";
 import { extractFirstImage } from "@/lib/utils/image-utils";
 import { extractTextFromHtml } from "@/lib/utils/text-utils";
-import { Calendar, Clock, ChevronLeft } from "lucide-react";
+import { Calendar, ChevronLeft } from "lucide-react";
 import { ShareWidget } from "@/components/ui/ShareWidget";
 
 interface HorizontalArticleCardProps {
@@ -27,10 +28,12 @@ export function HorizontalArticleCard({ article, className }: HorizontalArticleC
                 className="w-[100px] h-[70px] sm:w-[220px] sm:h-[130px] md:w-[280px] md:h-[160px] bg-muted rounded-lg flex-shrink-0 style-image-container overflow-hidden relative shadow-sm border border-border block"
             >
                 {coverImage ? (
-                    <img
+                    <Image
                         src={coverImage}
-                        alt={article.title}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        alt={article.title || "Article Image"}
+                        fill
+                        sizes="(max-width: 640px) 100px, (max-width: 768px) 220px, 280px"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                 ) : (
                     <div className="absolute inset-0 bg-muted flex items-center justify-center text-5xl opacity-40 group-hover:scale-110 transition-transform duration-700">
